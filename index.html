@@ -48,6 +48,8 @@ a{color:inherit;text-decoration:none}
 .nav{display:flex;gap:26px;font-size:14px;color:var(--muted)}
 .nav a{transition:color .2s}
 .nav a:hover{color:var(--amber)}
+.nav .nav-demo{color:var(--amber);border:1px solid var(--line);padding:5px 12px;border-radius:2px;font-family:'JetBrains Mono',monospace;font-size:13px;transition:all .2s}
+.nav .nav-demo:hover{border-color:var(--amber);background:rgba(245,165,36,.08)}
 @media(max-width:680px){.nav{display:none}}
 
 /* ---- hero ---- */
@@ -168,6 +170,7 @@ footer{padding:28px 0;text-align:center;color:var(--steel);font-family:'JetBrain
       <a href="#skills">Stack</a>
       <a href="#proyectos">Proyectos</a>
       <a href="#contacto">Contacto</a>
+      <a href="./demo/" target="_blank" rel="noopener" class="nav-demo">Demo ↗</a>
     </nav>
   </div>
 </header>
@@ -257,20 +260,30 @@ footer{padding:28px 0;text-align:center;color:var(--steel);font-family:'JetBrain
     <p class="sec-intro">Sistemas construidos de punta a punta: desde la integración con la API hasta la interfaz que usa el equipo.</p>
 
     <div class="proj reveal">
+    <div class="proj reveal">
       <div class="idx">01</div>
       <div>
-        <h3>GlovalERP — Gestión de tesorería <span class="badge">demo en vivo</span></h3>
-        <p>Sistema web de gestión de pagos y tesorería construido con Flask y PostgreSQL: registro y autorización de lotes de pago, bills por vencer, comprobantes, notificaciones por correo (SMTP) y control de usuarios, permisos y bancos. La demo interactiva simula el flujo completo con datos de ejemplo, sin backend.</p>
-        <div class="stack"><span>Python</span><span>Flask</span><span>PostgreSQL</span><span>SMTP</span></div>
-        <div class="links">
-          <a class="plink demo" href="./demo/" target="_blank" rel="noopener">Ver demo →</a>
-          <a class="plink code" href="https://github.com/TU_USUARIO/glovalerp" target="_blank" rel="noopener">Ver código</a>
-        </div>
+        <h3>Sistema de tickets de TI — SLA & KPIs <span class="badge">en desarrollo</span></h3>
+        <p>Plataforma interna de gestión de tickets para el área de TI: seguimiento de SLA en horario hábil, jerarquía de roles, tableros de KPIs y métricas operativas. SPA construida con React + Vite y Tailwind, con Supabase (PostgreSQL, Auth y Storage) como backend, soporte multi-idioma con i18next e instalable como PWA. Desplegada en Vercel.</p>
+        <div class="stack"><span>React</span><span>Vite</span><span>Tailwind</span><span>Supabase</span><span>i18next</span><span>PWA</span></div>
       </div>
     </div>
 
     <div class="proj reveal">
       <div class="idx">02</div>
+      <div>
+        <h3>R-SolutionsERP — Gestión de tesorería <span class="badge">demo en vivo</span></h3>
+        <p>Sistema web de gestión de pagos y tesorería construido con Flask y PostgreSQL: registro y autorización de lotes de pago, bills por vencer, comprobantes, notificaciones por correo (SMTP) y control de usuarios, permisos y bancos. La demo interactiva simula el flujo completo con datos de ejemplo, sin backend.</p>
+        <div class="stack"><span>Python</span><span>Flask</span><span>PostgreSQL</span><span>SMTP</span></div>
+        <div class="links">
+          <a class="plink demo" href="./demo/" target="_blank" rel="noopener">Ver demo →</a>
+          <a class="plink code" href="https://github.com/revp17/r-solutions-erp" target="_blank" rel="noopener">Ver código</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj reveal">
+      <div class="idx">03</div>
       <div>
         <h3>ETL de embarques Magaya <span class="badge">producción</span></h3>
         <p>Extracción de datos desde la API SOAP de Magaya hacia PostgreSQL, con parsing de jerarquías master/house y una interfaz de escritorio para operaciones. Reemplazó la extracción manual de reportes por un flujo automatizado.</p>
@@ -279,7 +292,7 @@ footer{padding:28px 0;text-align:center;color:var(--steel);font-family:'JetBrain
     </div>
 
     <div class="proj reveal">
-      <div class="idx">03</div>
+      <div class="idx">04</div>
       <div>
         <h3>Facturación electrónica SRI <span class="badge">Ecuador</span></h3>
         <p>Sistema completo de comprobantes electrónicos (facturas, retenciones, notas de crédito) con FastAPI, React y Electron, integrado con Magaya y almacenamiento en PostgreSQL. Cubre todos los tipos de documento exigidos por el SRI.</p>
@@ -288,7 +301,7 @@ footer{padding:28px 0;text-align:center;color:var(--steel);font-family:'JetBrain
     </div>
 
     <div class="proj reveal">
-      <div class="idx">04</div>
+      <div class="idx">05</div>
       <div>
         <h3>Gestión de correo M365 <span class="badge">agente</span></h3>
         <p>Agente en Python para administración de almacenamiento de correo: registro de app en Azure AD, Microsoft Graph, exportación PST vía Outlook COM e inteligencia local en SQLite para análisis de tendencias, programado con Windows Task Scheduler.</p>
@@ -297,7 +310,7 @@ footer{padding:28px 0;text-align:center;color:var(--steel);font-family:'JetBrain
     </div>
 
     <div class="proj reveal">
-      <div class="idx">05</div>
+      <div class="idx">06</div>
       <div>
         <h3>Reportes PDF automatizados <span class="badge">n8n</span></h3>
         <p>Workflow en n8n que genera reportes PDF de embarques con Gotenberg y los envía por Outlook. Incluye manejo de codificación CSV y reinyección de estadísticas tras la conversión a binario.</p>
@@ -306,7 +319,7 @@ footer{padding:28px 0;text-align:center;color:var(--steel);font-family:'JetBrain
     </div>
 
     <div class="proj reveal">
-      <div class="idx">06</div>
+      <div class="idx">07</div>
       <div>
         <h3>Plataforma de captación de leads <span class="badge">producto</span></h3>
         <p>Plataforma comercial para el mercado de EE. UU.: bot de cotización con LLM, alertas por Telegram y prospección web, sobre stack n8n + Docker + PostgreSQL + Gotenberg + Microsoft Graph. Incluye marco legal (CAN-SPAM, CCPA/CPRA).</p>
@@ -315,7 +328,7 @@ footer{padding:28px 0;text-align:center;color:var(--steel);font-family:'JetBrain
     </div>
 
     <div class="proj reveal">
-      <div class="idx">07</div>
+      <div class="idx">08</div>
       <div>
         <h3>Dashboards & herramientas internas <span class="badge">varios</span></h3>
         <p>Tableros de ventas interactivos con Chart.js y filtros por país, sistema de atención al cliente empresarial desplegado en Vercel, y landing pages con Next.js + Firebase y animaciones con Framer Motion.</p>
