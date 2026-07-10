@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crack — Ingeniero de Integraciones & Automatización</title>
+<meta name="description" content="Desarrollador full-stack especializado en integraciones SOAP/REST, automatización de procesos logísticos y ecosistema Microsoft 365.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0b1220;
+  --panel:#0f1a2e;
+  --line:#1e2f4d;
+  --paper:#f5f7fa;
+  --steel:#7c93b8;
+  --amber:#f5a524;
+  --amber-dim:#c47d0a;
+  --cyan:#4dd0c9;
+  --text:#e8edf5;
+  --muted:#9fb0cc;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink);
+  color:var(--text);
+  font-family:'Space Grotesk',system-ui,sans-serif;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+/* ---- topbar ---- */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(11,18,32,.82);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.brand{font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.02em;font-size:15px}
+.brand span{color:var(--amber)}
+.nav{display:flex;gap:26px;font-size:14px;color:var(--muted)}
+.nav a{transition:color .2s}
+.nav a:hover{color:var(--amber)}
+@media(max-width:680px){.nav{display:none}}
+
+/* ---- hero ---- */
+.hero{position:relative;padding:96px 0 72px;border-bottom:1px solid var(--line);overflow:hidden}
+.hero .eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:13px;
+  color:var(--cyan);letter-spacing:.14em;text-transform:uppercase;margin-bottom:20px;
+  opacity:0;animation:fade .7s .1s forwards;
+}
+.hero h1{
+  font-size:clamp(34px,6vw,64px);font-weight:700;line-height:1.05;letter-spacing:-.02em;
+  max-width:16ch;opacity:0;animation:rise .8s .2s forwards;
+}
+.hero h1 em{color:var(--amber);font-style:normal}
+.hero .lead{
+  margin-top:22px;max-width:56ch;font-size:clamp(16px,2vw,19px);color:var(--muted);
+  opacity:0;animation:rise .8s .35s forwards;
+}
+.hero .cta{margin-top:34px;display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:rise .8s .5s forwards}
+.btn{
+  font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;
+  padding:12px 22px;border-radius:2px;border:1px solid var(--line);
+  transition:all .2s;cursor:pointer;
+}
+.btn-primary{background:var(--amber);color:var(--ink);border-color:var(--amber);font-weight:700}
+.btn-primary:hover{background:var(--amber-dim);border-color:var(--amber-dim)}
+.btn-ghost:hover{border-color:var(--amber);color:var(--amber)}
+
+/* signature: routing manifest strip */
+.manifest{
+  margin-top:52px;border:1px solid var(--line);border-radius:3px;
+  background:linear-gradient(180deg,var(--panel),#0c1526);
+  font-family:'JetBrains Mono',monospace;font-size:13px;
+  opacity:0;animation:rise .8s .65s forwards;overflow:hidden;
+}
+.manifest-head{
+  display:flex;justify-content:space-between;padding:10px 16px;
+  border-bottom:1px solid var(--line);color:var(--steel);font-size:12px;letter-spacing:.05em;
+}
+.manifest-head .dot{width:9px;height:9px;border-radius:50%;background:var(--cyan);display:inline-block;margin-right:8px;box-shadow:0 0 8px var(--cyan)}
+.route{display:grid;grid-template-columns:auto 1fr auto;gap:16px;padding:11px 16px;border-bottom:1px solid rgba(30,47,77,.5);align-items:center}
+.route:last-child{border-bottom:none}
+.route .from{color:var(--amber)}
+.route .arr{color:var(--steel)}
+.route .to{color:var(--text)}
+.route .stat{color:var(--cyan);font-size:12px}
+@media(max-width:680px){.route{grid-template-columns:1fr;gap:2px}.route .stat{justify-self:start}}
+
+/* ---- sections ---- */
+section{padding:76px 0;border-bottom:1px solid var(--line)}
+.sec-label{
+  font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--cyan);
+  letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px;
+}
+.sec-label::before{content:"// ";color:var(--steel)}
+h2{font-size:clamp(26px,4vw,38px);font-weight:600;letter-spacing:-.01em;margin-bottom:16px}
+.sec-intro{color:var(--muted);max-width:60ch;margin-bottom:40px}
+
+/* about grid */
+.about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:40px}
+@media(max-width:760px){.about-grid{grid-template-columns:1fr;gap:28px}}
+.about-grid p{color:var(--muted);margin-bottom:16px}
+.facts{border:1px solid var(--line);border-radius:3px;background:var(--panel);padding:24px;height:fit-content}
+.facts .row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(30,47,77,.6);font-size:14px}
+.facts .row:last-child{border-bottom:none}
+.facts .k{color:var(--steel);font-family:'JetBrains Mono',monospace;font-size:12px}
+.facts .v{color:var(--text);text-align:right}
+
+/* skills */
+.skill-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:760px){.skill-cols{grid-template-columns:1fr}}
+.skill-card{border:1px solid var(--line);border-radius:3px;background:var(--panel);padding:22px;transition:border-color .2s,transform .2s}
+.skill-card:hover{border-color:var(--amber);transform:translateY(-3px)}
+.skill-card h3{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--amber);margin-bottom:14px;letter-spacing:.03em}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);border:1px solid var(--line);padding:4px 10px;border-radius:2px;background:rgba(15,26,46,.6)}
+
+/* projects */
+.proj{display:grid;grid-template-columns:64px 1fr;gap:22px;padding:26px 0;border-top:1px solid var(--line)}
+.proj:first-of-type{border-top:none}
+.proj .idx{font-family:'JetBrains Mono',monospace;color:var(--steel);font-size:15px;padding-top:4px}
+.proj h3{font-size:20px;font-weight:600;margin-bottom:8px}
+.proj h3 .badge{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cyan);border:1px solid var(--line);padding:2px 8px;border-radius:2px;margin-left:10px;vertical-align:middle;letter-spacing:.03em}
+.proj p{color:var(--muted);margin-bottom:12px;max-width:64ch}
+.proj .stack{display:flex;flex-wrap:wrap;gap:7px}
+.proj .stack span{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--amber);opacity:.9}
+.proj .links{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.proj .plink{font-family:'JetBrains Mono',monospace;font-size:12px;padding:7px 14px;border:1px solid var(--line);border-radius:2px;color:var(--text);transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.proj .plink.demo{background:var(--amber);color:var(--ink);border-color:var(--amber);font-weight:700}
+.proj .plink.demo:hover{background:var(--amber-dim);border-color:var(--amber-dim)}
+.proj .plink.code:hover{border-color:var(--amber);color:var(--amber)}
+@media(max-width:680px){.proj{grid-template-columns:1fr}.proj .idx{padding-top:0}}
+
+/* contact */
+.contact{text-align:center;padding:88px 0}
+.contact h2{margin-bottom:14px}
+.contact p{color:var(--muted);max-width:48ch;margin:0 auto 30px}
+.contact .links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+footer{padding:28px 0;text-align:center;color:var(--steel);font-family:'JetBrains Mono',monospace;font-size:12px}
+
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fade{to{opacity:1}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.hero .eyebrow,.hero h1,.hero .lead,.hero .cta,.manifest{opacity:1!important}}
+
+/* scroll reveal */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}
+.reveal.in{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">crack<span>.dev</span></div>
+    <nav class="nav">
+      <a href="#sobre">Perfil</a>
+      <a href="#skills">Stack</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Desarrollador full-stack · Integraciones · Guayaquil, EC (UTC-5)</div>
+    <h1>Conecto sistemas que no fueron hechos para <em>hablar entre sí</em>.</h1>
+    <p class="lead">Diseño y construyo integraciones SOAP/REST, automatizaciones y herramientas internas para logística y comercio exterior. Convierto procesos manuales en pipelines que corren solos.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="#proyectos">Ver proyectos</a>
+      <a class="btn btn-ghost" href="#contacto">Trabajemos juntos</a>
+    </div>
+
+    <div class="manifest">
+      <div class="manifest-head">
+        <span><span class="dot"></span>pipeline · estado en producción</span>
+        <span>sync: OK</span>
+      </div>
+      <div class="route"><span class="from mono">Magaya SOAP</span><span class="arr mono">──►</span><span class="to mono">PostgreSQL ETL</span><span class="stat">reportes automáticos</span></div>
+      <div class="route"><span class="from mono">Microsoft Graph</span><span class="arr mono">──►</span><span class="to mono">Outlook / OneDrive</span><span class="stat">correo + archivos</span></div>
+      <div class="route"><span class="from mono">n8n + Docker</span><span class="arr mono">──►</span><span class="to mono">Gotenberg PDF</span><span class="stat">documentos on-demand</span></div>
+      <div class="route"><span class="from mono">SRI Ecuador</span><span class="arr mono">──►</span><span class="to mono">Facturación electrónica</span><span class="stat">todos los comprobantes</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="sobre">
+  <div class="wrap">
+    <div class="sec-label">Perfil</div>
+    <h2>Especialista en integración de sistemas empresariales</h2>
+    <div class="about-grid reveal">
+      <div>
+        <p>Soy desarrollador full-stack y systems integrator. Mi trabajo vive en el punto donde se cruzan el backend, la automatización y las APIs empresariales: ahí donde un ERP tiene que conversar con el correo corporativo, la facturación electrónica y un tablero interno sin que nadie copie datos a mano.</p>
+        <p>Trabajo a diario con Python (Django, FastAPI), automatización con n8n y Docker, y el ecosistema Microsoft 365 vía Microsoft Graph. Tengo especialización profunda en la API SOAP de Magaya Supply Chain, poco documentada, donde he resuelto autenticación, parsing de jerarquías de embarques y ETL hacia bases de datos.</p>
+        <p>Además construyo productos propios: dashboards de ventas, agentes con LLM y herramientas SaaS. Me interesa el trabajo remoto con equipos de EE. UU. y Canadá, con solapamiento horario completo en UTC-5.</p>
+      </div>
+      <aside class="facts">
+        <div class="row"><span class="k">UBICACIÓN</span><span class="v">Guayaquil, Ecuador</span></div>
+        <div class="row"><span class="k">ZONA</span><span class="v">UTC-5 (US overlap)</span></div>
+        <div class="row"><span class="k">ROL</span><span class="v">Full-stack / Integrator</span></div>
+        <div class="row"><span class="k">FOCO</span><span class="v">SOAP · REST · Automatización</span></div>
+        <div class="row"><span class="k">IDIOMAS</span><span class="v">Español · Inglés</span></div>
+        <div class="row"><span class="k">MODO</span><span class="v">Remoto / Freelance</span></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-label">Stack técnico</div>
+    <h2>Herramientas que uso en producción</h2>
+    <p class="sec-intro">No es una lista de deseos. Es lo que he desplegado, roto, arreglado y mantenido en sistemas reales con usuarios reales.</p>
+    <div class="skill-cols">
+      <div class="skill-card reveal">
+        <h3>backend</h3>
+        <div class="tags">
+          <span class="tag">Python</span><span class="tag">Django</span><span class="tag">FastAPI</span>
+          <span class="tag">PostgreSQL</span><span class="tag">SQL Server</span><span class="tag">SQLite</span>
+          <span class="tag">Prisma</span><span class="tag">Next.js</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>integraciones</h3>
+        <div class="tags">
+          <span class="tag">Magaya SOAP</span><span class="tag">Microsoft Graph</span><span class="tag">MSAL</span>
+          <span class="tag">Azure AD</span><span class="tag">REST APIs</span><span class="tag">XML/SOAP</span>
+          <span class="tag">SRI Ecuador</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>automatización & devops</h3>
+        <div class="tags">
+          <span class="tag">n8n</span><span class="tag">Docker</span><span class="tag">Gotenberg</span>
+          <span class="tag">Task Scheduler</span><span class="tag">ETL</span><span class="tag">Vercel</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="proyectos">
+  <div class="wrap">
+    <div class="sec-label">Proyectos</div>
+    <h2>Trabajo seleccionado</h2>
+    <p class="sec-intro">Sistemas construidos de punta a punta: desde la integración con la API hasta la interfaz que usa el equipo.</p>
+
+    <div class="proj reveal">
+      <div class="idx">01</div>
+      <div>
+        <h3>GlovalERP — Gestión de tesorería <span class="badge">demo en vivo</span></h3>
+        <p>Sistema web de gestión de pagos y tesorería construido con Flask y PostgreSQL: registro y autorización de lotes de pago, bills por vencer, comprobantes, notificaciones por correo (SMTP) y control de usuarios, permisos y bancos. La demo interactiva simula el flujo completo con datos de ejemplo, sin backend.</p>
+        <div class="stack"><span>Python</span><span>Flask</span><span>PostgreSQL</span><span>SMTP</span></div>
+        <div class="links">
+          <a class="plink demo" href="./demo/" target="_blank" rel="noopener">Ver demo →</a>
+          <a class="plink code" href="https://github.com/TU_USUARIO/glovalerp" target="_blank" rel="noopener">Ver código</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj reveal">
+      <div class="idx">02</div>
+      <div>
+        <h3>ETL de embarques Magaya <span class="badge">producción</span></h3>
+        <p>Extracción de datos desde la API SOAP de Magaya hacia PostgreSQL, con parsing de jerarquías master/house y una interfaz de escritorio para operaciones. Reemplazó la extracción manual de reportes por un flujo automatizado.</p>
+        <div class="stack"><span>Python</span><span>SOAP</span><span>PostgreSQL</span><span>ETL</span></div>
+      </div>
+    </div>
+
+    <div class="proj reveal">
+      <div class="idx">03</div>
+      <div>
+        <h3>Facturación electrónica SRI <span class="badge">Ecuador</span></h3>
+        <p>Sistema completo de comprobantes electrónicos (facturas, retenciones, notas de crédito) con FastAPI, React y Electron, integrado con Magaya y almacenamiento en PostgreSQL. Cubre todos los tipos de documento exigidos por el SRI.</p>
+        <div class="stack"><span>FastAPI</span><span>React</span><span>Electron</span><span>PostgreSQL</span></div>
+      </div>
+    </div>
+
+    <div class="proj reveal">
+      <div class="idx">04</div>
+      <div>
+        <h3>Gestión de correo M365 <span class="badge">agente</span></h3>
+        <p>Agente en Python para administración de almacenamiento de correo: registro de app en Azure AD, Microsoft Graph, exportación PST vía Outlook COM e inteligencia local en SQLite para análisis de tendencias, programado con Windows Task Scheduler.</p>
+        <div class="stack"><span>Microsoft Graph</span><span>Azure AD</span><span>SQLite</span><span>Python</span></div>
+      </div>
+    </div>
+
+    <div class="proj reveal">
+      <div class="idx">05</div>
+      <div>
+        <h3>Reportes PDF automatizados <span class="badge">n8n</span></h3>
+        <p>Workflow en n8n que genera reportes PDF de embarques con Gotenberg y los envía por Outlook. Incluye manejo de codificación CSV y reinyección de estadísticas tras la conversión a binario.</p>
+        <div class="stack"><span>n8n</span><span>Docker</span><span>Gotenberg</span><span>Microsoft Graph</span></div>
+      </div>
+    </div>
+
+    <div class="proj reveal">
+      <div class="idx">06</div>
+      <div>
+        <h3>Plataforma de captación de leads <span class="badge">producto</span></h3>
+        <p>Plataforma comercial para el mercado de EE. UU.: bot de cotización con LLM, alertas por Telegram y prospección web, sobre stack n8n + Docker + PostgreSQL + Gotenberg + Microsoft Graph. Incluye marco legal (CAN-SPAM, CCPA/CPRA).</p>
+        <div class="stack"><span>LLM</span><span>n8n</span><span>PostgreSQL</span><span>Telegram</span></div>
+      </div>
+    </div>
+
+    <div class="proj reveal">
+      <div class="idx">07</div>
+      <div>
+        <h3>Dashboards & herramientas internas <span class="badge">varios</span></h3>
+        <p>Tableros de ventas interactivos con Chart.js y filtros por país, sistema de atención al cliente empresarial desplegado en Vercel, y landing pages con Next.js + Firebase y animaciones con Framer Motion.</p>
+        <div class="stack"><span>Chart.js</span><span>Next.js</span><span>Firebase</span><span>Vercel</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contacto" class="contact">
+  <div class="wrap">
+    <div class="sec-label" style="text-align:center">Contacto</div>
+    <h2>¿Tienes un sistema que necesita conectarse?</h2>
+    <p>Disponible para proyectos freelance y posiciones remotas. Escríbeme y lo conversamos.</p>
+    <div class="links">
+      <a class="btn btn-primary" href="mailto:TU_CORREO@ejemplo.com">Enviar correo</a>
+      <a class="btn btn-ghost" href="https://github.com/TU_USUARIO" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn btn-ghost" href="https://www.linkedin.com/in/TU_PERFIL" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">// construido con HTML plano · desplegado en GitHub Pages · Guayaquil, EC</div>
+</footer>
+
+<script>
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
