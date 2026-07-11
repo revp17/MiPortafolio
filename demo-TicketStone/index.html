@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TicketStone — Gloval Shipping</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{brand:{50:'#eff6ff',100:'#dbeafe',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af'}}}}}</script>
+<style>
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f8fafc}
+.nav-link{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;font-size:13px;font-weight:500;color:#6b7280;cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left}
+.nav-link:hover{background:#f3f4f6;color:#374151}
+.nav-link.active{background:#eff6ff;color:#1d4ed8}
+.card{background:white;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);padding:24px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600;border:1px solid}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0}
+.tip{position:relative;display:inline-block}
+.tip .tipbox{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#111827;color:#fff;border-radius:8px;padding:10px 14px;font-size:11px;white-space:nowrap;z-index:99;pointer-events:none;line-height:1.6}
+.tip .tipbox::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#111827}
+.tip:hover .tipbox{display:block}
+input:focus,select:focus,textarea:focus{outline:2px solid #bfdbfe;outline-offset:0}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#e5e7eb;border-radius:2px}
+.row-hover:hover{background:#f9fafb!important}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="pg-login" style="min-height:100vh;display:flex;align-items:center;justify-content:center">
+  <div style="width:100%;max-width:360px">
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="display:inline-flex;align-items:center;justify-content:center;width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,#1e3a8a,#2563eb);margin-bottom:14px">
+        <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      </div>
+      <h1 style="font-size:22px;font-weight:800;color:#0f172a;margin:0">TicketStone</h1>
+      <p style="font-size:13px;color:#94a3b8;margin:4px 0 0">Gloval Shipping &mdash; Sistema de Tickets TI</p>
+    </div>
+    <div class="card">
+      <div style="margin-bottom:14px">
+        <label style="display:block;font-size:11px;font-weight:600;color:#64748b;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">Usuario</label>
+        <input id="l-user" type="text" value="miproyecto" placeholder="usuario"
+          style="width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:13px;color:#0f172a;background:#f8fafc"
+          onkeydown="if(event.key==='Enter')login()">
+      </div>
+      <div style="margin-bottom:18px">
+        <label style="display:block;font-size:11px;font-weight:600;color:#64748b;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">Contraseña</label>
+        <input id="l-pass" type="password" value="miproyecto" placeholder="••••••••"
+          style="width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:13px;color:#0f172a;background:#f8fafc"
+          onkeydown="if(event.key==='Enter')login()">
+      </div>
+      <div id="l-err" style="display:none;font-size:12px;color:#dc2626;background:#fef2f2;border:1px solid #fecaca;padding:8px 12px;border-radius:8px;margin-bottom:12px">Credenciales incorrectas.</div>
+      <button onclick="login()" style="width:100%;padding:11px;background:#1d4ed8;color:white;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;transition:background .15s"
+        onmouseover="this.style.background='#1e40af'" onmouseout="this.style.background='#1d4ed8'">
+        Iniciar sesión
+      </button>
+    </div>
+    <p style="text-align:center;font-size:11px;color:#94a3b8;margin-top:20px">Credenciales demo: miproyecto / miproyecto</p>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="pg-app" style="display:none;min-height:100vh;display:none">
+  <div style="display:flex;min-height:100vh">
+    <!-- Sidebar -->
+    <aside style="width:236px;background:white;border-right:1px solid #f1f5f9;display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh">
+      <div style="padding:18px 16px 14px;border-bottom:1px solid #f1f5f9">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#1e3a8a,#2563eb);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          </div>
+          <div>
+            <p style="font-size:14px;font-weight:800;color:#0f172a;line-height:1.2">TicketStone</p>
+            <p style="font-size:11px;color:#94a3b8;line-height:1.2">Gloval Shipping</p>
+          </div>
+        </div>
+      </div>
+      <nav style="flex:1;padding:10px 8px;overflow-y:auto">
+        <button class="nav-link" id="n-dashboard" onclick="go('dashboard')">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          Dashboard
+        </button>
+        <button class="nav-link" id="n-tickets" onclick="go('tickets')">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+          Tickets
+        </button>
+        <button class="nav-link" id="n-new" onclick="go('new')">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" d="M12 4v16m8-8H4"/></svg>
+          Nuevo Ticket
+        </button>
+        <button class="nav-link" id="n-categories" onclick="go('categories')">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"/></svg>
+          Categor&iacute;as
+        </button>
+        <button class="nav-link" id="n-users" onclick="go('users')">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Usuarios
+        </button>
+      </nav>
+      <div style="padding:12px 8px;border-top:1px solid #f1f5f9">
+        <div style="display:flex;align-items:center;gap:10px;padding:8px">
+          <div style="width:30px;height:30px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#1d4ed8;flex-shrink:0">MP</div>
+          <div style="flex:1;min-width:0">
+            <p style="font-size:12px;font-weight:600;color:#0f172a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Mi Proyecto</p>
+            <p style="font-size:11px;color:#94a3b8">superadmin</p>
+          </div>
+          <button onclick="logout()" style="background:none;border:none;color:#9ca3af;cursor:pointer" title="Salir">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+    <!-- Content -->
+    <main style="flex:1;overflow-y:auto;padding:36px 40px">
+      <div id="content" style="max-width:900px;margin:0 auto"></div>
+    </main>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div id="modal" onclick="if(event.target===this)closeModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;align-items:center;justify-content:center">
+  <div id="modal-box" style="background:white;border-radius:20px;padding:36px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.2)"></div>
+</div>
+
+<script>
+// ── DATA ────────────────────────────────────────────────────────
+const TR = {abierto:['en_progreso'],en_progreso:['esperando_usuario','resuelto'],esperando_usuario:['en_progreso','resuelto'],resuelto:['en_progreso','cerrado'],cerrado:[]}
+const SL = {abierto:'Abierto',en_progreso:'En Progreso',esperando_usuario:'Esperando Usuario',resuelto:'Resuelto',cerrado:'Cerrado'}
+const SS = {abierto:'Abierto',en_progreso:'En Prog.',esperando_usuario:'Esp. Usuario',resuelto:'Resuelto',cerrado:'Cerrado'}
+const PL = {baja:'Baja',media:'Media',alta:'Alta'}
+const UL = {baja:'Baja',media:'Media',alta:'Alta'}
+const BL = {peru:'Perú',ecuador:'Ecuador',usa:'USA',panama:'Panamá'}
+const SLA = {alta:{fr:60,res:240},media:{fr:240,res:540},baja:{fr:540,res:1620}}
+const STACK = [
+  {g:'Frontend',items:['React 18','Vite 5','TypeScript','Tailwind CSS 3','React Router 6','react-i18next','vite-plugin-pwa']},
+  {g:'Backend / Supabase',items:['Supabase JS v2','Supabase Auth + JWT','PostgreSQL 15','Row Level Security (RLS)','Edge Functions (Deno)']},
+  {g:'Extensiones PostgreSQL',items:['pg_net — HTTP asíncrono','pg_cron — jobs programados','supabase_vault — secrets cifrados']},
+  {g:'Infraestructura & Servicios',items:['Vercel (deploy)','Telegram Bot API','Webhook DB Triggers','Status Transition Validator','SLA Cron Job (cada 5 min)']},
+]
+
+let tickets = [
+  {id:'1',num:'TK-2026-0001',subj:'Equipo HP no enciende al iniciar el día',desc:'El equipo HP EliteBook asignado no enciende desde el lunes. Ya intenté el botón de reset sin resultado.',cat:'Hardware',catId:'c1',urg:'alta',pri:'alta',st:'en_progreso',created:'2026-07-10T08:45:00',fr:'2026-07-10T09:30:00',res:null,cls:null,branch:'peru',creator:'Carlos Mendez',sla:{f:'ok',fp:150,r:'warning',rp:82},ooh:false,hist:[{id:'h1',old:null,nw:'abierto',at:'2026-07-10T08:45:00',by:'Sistema'},{id:'h2',old:'abierto',nw:'en_progreso',at:'2026-07-10T09:30:00',by:'María López'}]},
+  {id:'2',num:'TK-2026-0002',subj:'VPN no conecta desde sucursal Guayaquil',desc:'Desde ayer en la tarde no podemos conectarnos a la VPN corporativa. Afecta a 5 usuarios del equipo de logística.',cat:'Red',catId:'c3',urg:'alta',pri:null,st:'abierto',created:'2026-07-11T09:15:00',fr:null,res:null,cls:null,branch:'ecuador',creator:'Ana Rodríguez',sla:null,ooh:false,hist:[{id:'h3',old:null,nw:'abierto',at:'2026-07-11T09:15:00',by:'Sistema'}]},
+  {id:'3',num:'TK-2026-0003',subj:'Error al generar reportes en SAP — módulo FI',desc:'Al intentar generar el reporte de cierre mensual en SAP aparece error ORA-00942. Crítico para cierre contable.',cat:'Software',catId:'c2',urg:'alta',pri:'alta',st:'esperando_usuario',created:'2026-07-09T10:00:00',fr:'2026-07-09T10:15:00',res:null,cls:null,branch:'usa',creator:'John Smith',sla:{f:'ok',fp:25,r:'breached',rp:125},ooh:false,hist:[{id:'h4',old:null,nw:'abierto',at:'2026-07-09T10:00:00',by:'Sistema'},{id:'h5',old:'abierto',nw:'en_progreso',at:'2026-07-09T10:15:00',by:'María López'},{id:'h6',old:'en_progreso',nw:'esperando_usuario',at:'2026-07-09T14:00:00',by:'María López'}]},
+  {id:'4',num:'TK-2026-0004',subj:'Acceso a carpeta compartida de Finanzas',desc:'Solicito acceso de lectura a la carpeta compartida de Finanzas para ejecutar mis funciones en el nuevo rol.',cat:'Acceso',catId:'c4',urg:'baja',pri:'baja',st:'resuelto',created:'2026-07-08T11:00:00',fr:'2026-07-08T14:00:00',res:'2026-07-09T09:00:00',cls:null,branch:'panama',creator:'María González',sla:{f:'ok',fp:55,r:'ok',rp:30},ooh:false,hist:[{id:'h7',old:null,nw:'abierto',at:'2026-07-08T11:00:00',by:'Sistema'},{id:'h8',old:'abierto',nw:'en_progreso',at:'2026-07-08T14:00:00',by:'Ronald Vásquez'},{id:'h9',old:'en_progreso',nw:'resuelto',at:'2026-07-09T09:00:00',by:'Ronald Vásquez'}]},
+  {id:'5',num:'TK-2026-0005',subj:'Impresora HP LaserJet P3 solo imprime en B/N',desc:'Después de la actualización de driver del martes, la impresora perdió la capacidad de imprimir en color.',cat:'Hardware',catId:'c1',urg:'media',pri:'media',st:'abierto',created:'2026-07-11T10:30:00',fr:null,res:null,cls:null,branch:'peru',creator:'Pedro Torres',sla:{f:'warning',fp:78,r:'pending',rp:18},ooh:false,hist:[{id:'h10',old:null,nw:'abierto',at:'2026-07-11T10:30:00',by:'Sistema'}]},
+]
+let cats = [{id:'c1',name:'Hardware',on:true},{id:'c2',name:'Software',on:true},{id:'c3',name:'Red',on:true},{id:'c4',name:'Acceso',on:true},{id:'c5',name:'Otro',on:true}]
+let users = [
+  {id:'u1',name:'Ronald Vásquez',email:'ronald.vasquez@glovalgroup.com',role:'superadmin',branch:'ecuador',area:'TI',on:true},
+  {id:'u2',name:'María López',email:'maria.lopez@glovalperu.com',role:'admin',branch:'peru',area:'TI',on:true},
+  {id:'u3',name:'Carlos Mendez',email:'carlos.mendez@glovalperu.com',role:'user',branch:'peru',area:'Logística',on:true},
+  {id:'u4',name:'Ana Rodríguez',email:'ana.rodriguez@glovalgroup.com',role:'user',branch:'ecuador',area:'Finanzas',on:true},
+  {id:'u5',name:'John Smith',email:'john.smith@glovalusa.com',role:'user',branch:'usa',area:'Contabilidad',on:false},
+]
+
+// ── STATE ───────────────────────────────────────────────────────
+let page = 'dashboard', tid = null, brf = '', urg = null
+
+// ── AUTH ────────────────────────────────────────────────────────
+function login(){
+  const u=document.getElementById('l-user').value.trim()
+  const p=document.getElementById('l-pass').value.trim()
+  if((u==='miproyecto'||u==='miproyecto@glovalgroup.com')&&p==='miproyecto'){
+    document.getElementById('pg-login').style.display='none'
+    document.getElementById('pg-app').style.display='block'
+    go('dashboard')
+  } else { document.getElementById('l-err').style.display='block' }
+}
+function logout(){
+  document.getElementById('pg-app').style.display='none'
+  document.getElementById('pg-login').style.display='flex'
+}
+
+// ── ROUTER ──────────────────────────────────────────────────────
+function go(p2,id){
+  page=p2; tid=id||null
+  document.querySelectorAll('.nav-link').forEach(e=>e.classList.remove('active'))
+  const m={dashboard:'n-dashboard',tickets:'n-tickets',new:'n-new',categories:'n-categories',users:'n-users',detail:'n-tickets'}
+  if(m[page]) document.getElementById(m[page])?.classList.add('active')
+  render()
+}
+function render(){
+  const fns={dashboard:pgDashboard,tickets:pgTickets,detail:pgDetail,new:pgNew,categories:pgCats,users:pgUsers}
+  document.getElementById('content').innerHTML=(fns[page]||pgDashboard)()
+}
+
+// ── HELPERS ─────────────────────────────────────────────────────
+function sc(s){return {ok:'#16a34a',warning:'#d97706',breached:'#dc2626',pending:'#9ca3af'}[s]||'#9ca3af'}
+function sl(s){return {ok:'En plazo',warning:'Advertencia',breached:'Vencido',pending:'Pendiente'}[s]||'—'}
+function sbg(s){return {ok:'#dcfce7',warning:'#fef9c3',breached:'#fee2e2',pending:'#f3f4f6'}[s]||'#f3f4f6'}
+function sbc(s){return {ok:'#bbf7d0',warning:'#fde047',breached:'#fca5a5',pending:'#e5e7eb'}[s]||'#e5e7eb'}
+function dot(s,sz){sz=sz||8;return `<span style="width:${sz}px;height:${sz}px;border-radius:50%;background:${sc(s)};display:inline-block;flex-shrink:0"></span>`}
+function slaBadge(s){return `<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:600;border:1px solid;background:${sbg(s)};color:${sc(s)};border-color:${sbc(s)}">${dot(s)} ${sl(s)}</span>`}
+function stBadge(s){
+  const c={abierto:'#2563eb',en_progreso:'#7c3aed',esperando_usuario:'#b45309',resuelto:'#16a34a',cerrado:'#64748b'}
+  const b={abierto:'#eff6ff',en_progreso:'#f5f3ff',esperando_usuario:'#fffbeb',resuelto:'#f0fdf4',cerrado:'#f8fafc'}
+  const e={abierto:'#bfdbfe',en_progreso:'#ddd6fe',esperando_usuario:'#fde68a',resuelto:'#bbf7d0',cerrado:'#e2e8f0'}
+  return `<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:600;border:1px solid;background:${b[s]};color:${c[s]};border-color:${e[s]}">${SS[s]}</span>`
+}
+function priBadge(p){
+  if(!p)return '<span style="font-size:12px;color:#cbd5e1">Sin asignar</span>'
+  const c={alta:'#dc2626',media:'#d97706',baja:'#16a34a'}
+  return `<span style="font-size:12px;font-weight:700;color:${c[p]}">${PL[p]}</span>`
+}
+function fdt(iso){if(!iso)return '—';const d=new Date(iso);return d.toLocaleDateString('es-PE',{day:'2-digit',month:'2-digit',year:'numeric'})+' '+d.toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit'})}
+function ini(n){return n.split(' ').map(x=>x[0]).join('').substring(0,2).toUpperCase()}
+
+// ── PAGES ───────────────────────────────────────────────────────
+function pgDashboard(){
+  const tot=tickets.length
+  const byStatus=s=>tickets.filter(t=>t.st===s).length
+  const breached=tickets.filter(t=>t.sla&&(t.sla.r==='breached'||t.sla.f==='breached')).length
+  const unatt=tickets.filter(t=>!t.fr&&!['resuelto','cerrado'].includes(t.st)).length
+  const bycat={}; tickets.forEach(t=>{bycat[t.cat]=(bycat[t.cat]||0)+1})
+  return `
+  <!-- STACK BANNER -->
+  <div style="background:linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 60%,#3b82f6 100%);border-radius:18px;padding:24px;margin-bottom:24px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+      <span style="color:white;font-size:14px;font-weight:700">Stack Tecnol&oacute;gico</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      ${STACK.map(s=>`
+      <div style="background:rgba(255,255,255,.1);border-radius:12px;padding:14px">
+        <p style="color:rgba(186,230,253,.9);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin:0 0 9px">${s.g}</p>
+        <div style="display:flex;flex-wrap:wrap;gap:5px">
+          ${s.items.map(i=>`<span style="background:rgba(255,255,255,.18);color:white;font-size:11px;font-weight:500;padding:2px 9px;border-radius:999px">${i}</span>`).join('')}
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px">
+    ${[
+      {l:'Total',v:tot,c:'#1d4ed8'},
+      {l:'Abiertos',v:byStatus('abierto'),c:'#2563eb'},
+      {l:'En Progreso',v:byStatus('en_progreso'),c:'#7c3aed'},
+      {l:'Resueltos',v:byStatus('resuelto')+byStatus('cerrado'),c:'#16a34a'},
+      {l:'SLA Vencido',v:breached,c:'#dc2626'},
+    ].map(s=>`
+    <div class="card" style="padding:16px 18px">
+      <p style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin:0 0 6px">${s.l}</p>
+      <p style="font-size:30px;font-weight:800;color:${s.c};margin:0">${s.v}</p>
+    </div>`).join('')}
+  </div>
+
+  <!-- CHARTS -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card">
+      <p style="font-size:13px;font-weight:700;color:#0f172a;margin:0 0 16px">Tickets por Categor&iacute;a</p>
+      ${Object.entries(bycat).map(([c,n])=>`
+      <div style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#475569;margin-bottom:4px"><span>${c}</span><span style="font-weight:700">${n}</span></div>
+        <div style="background:#f1f5f9;border-radius:999px;height:5px"><div style="background:#2563eb;height:100%;width:${Math.round(n/tot*100)}%;border-radius:999px"></div></div>
+      </div>`).join('')}
+    </div>
+    <div class="card">
+      <p style="font-size:13px;font-weight:700;color:#0f172a;margin:0 0 16px">Tickets por Estado</p>
+      ${Object.entries(SL).map(([s,l])=>{const n=byStatus(s);if(!n)return '';const cols={abierto:'#2563eb',en_progreso:'#7c3aed',esperando_usuario:'#d97706',resuelto:'#16a34a',cerrado:'#64748b'};return `
+      <div style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#475569;margin-bottom:4px"><span>${l}</span><span style="font-weight:700">${n}</span></div>
+        <div style="background:#f1f5f9;border-radius:999px;height:5px"><div style="background:${cols[s]};height:100%;width:${Math.round(n/tot*100)}%;border-radius:999px"></div></div>
+      </div>`}).join('')}
+      ${unatt?`<div style="margin-top:14px;padding:10px 12px;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;font-size:12px;color:#92400e;display:flex;align-items:center;gap:8px">
+        <span style="width:8px;height:8px;border-radius:50%;background:#f59e0b;flex-shrink:0"></span>
+        ${unatt} ticket${unatt>1?'s':''} sin primera respuesta
+      </div>`:''}
+    </div>
+  </div>`
+}
+
+function pgTickets(){
+  const fil=brf?tickets.filter(t=>t.branch===brf):tickets
+  const sorted=[...fil].sort((a,b)=>{
+    const w=t=>{if(!t.sla)return 4;if(t.sla.r==='breached'||t.sla.f==='breached')return 1-Math.max(t.sla.rp||0,t.sla.fp||0)/1000;if(t.sla.r==='warning'||t.sla.f==='warning')return 2;return 3}
+    return w(a)-w(b)
+  })
+  return `
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+    <h1 style="font-size:20px;font-weight:800;color:#0f172a;margin:0">Tickets</h1>
+    <div style="display:flex;gap:10px">
+      <select onchange="brf=this.value;render()" style="border:1.5px solid #e2e8f0;border-radius:10px;padding:8px 12px;font-size:12px;color:#475569;background:white">
+        <option value="">Todas las sucursales</option>
+        ${['peru','ecuador','usa','panama'].map(b=>`<option value="${b}" ${brf===b?'selected':''}>${BL[b]}</option>`).join('')}
+      </select>
+      <button onclick="go('new')" style="background:#1d4ed8;color:white;border:none;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer">+ Nuevo ticket</button>
+    </div>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead>
+        <tr style="border-bottom:1px solid #f1f5f9">
+          ${['Número','Asunto / Categoría','Estado','Prioridad','Sucursal','SLA',''].map(h=>`<th style="text-align:left;padding:11px 14px;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">${h}</th>`).join('')}
+        </tr>
+      </thead>
+      <tbody>
+        ${sorted.map(t=>{
+          const unatt=!t.fr&&!['resuelto','cerrado'].includes(t.st)
+          const worst=t.sla?(t.sla.r==='breached'||t.sla.f==='breached'?'breached':t.sla.r==='warning'||t.sla.f==='warning'?'warning':'ok'):'pending'
+          const lim=SLA[t.pri||'media']
+          return `
+          <tr onclick="go('detail','${t.id}')" style="border-bottom:1px solid #f8fafc;cursor:pointer;background:${unatt?'#fffbeb':'white'}" class="row-hover">
+            <td style="padding:11px 14px">
+              <div style="display:flex;align-items:center;gap:6px">
+                ${unatt?`<span style="width:6px;height:6px;border-radius:50%;background:#f59e0b;flex-shrink:0"></span>`:'<span style="width:6px;height:6px;flex-shrink:0"></span>'}
+                <span style="font-family:monospace;font-size:11px;color:#64748b">${t.num}</span>
+              </div>
+            </td>
+            <td style="padding:11px 14px;max-width:220px">
+              <p style="font-weight:600;color:#0f172a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin:0">${t.subj}</p>
+              <p style="color:#94a3b8;font-size:11px;margin:2px 0 0">${t.cat}</p>
+            </td>
+            <td style="padding:11px 14px">${stBadge(t.st)}</td>
+            <td style="padding:11px 14px">${priBadge(t.pri)}</td>
+            <td style="padding:11px 14px;color:#64748b">${BL[t.branch]}</td>
+            <td style="padding:11px 14px">
+              ${t.sla?`
+              <div class="tip" style="display:inline-block">
+                <div style="display:flex;align-items:center;gap:5px">
+                  ${dot(t.sla.f)} <span style="font-size:11px;color:#64748b">${t.sla.fp!==null?t.sla.fp+'%':'?'}</span>
+                  <span style="color:#cbd5e1;font-size:10px">·</span>
+                  ${dot(t.sla.r)} <span style="font-size:11px;color:#64748b">${t.sla.rp!==null?t.sla.rp+'%':'?'}</span>
+                </div>
+                <div class="tipbox">
+                  <b style="display:block;margin-bottom:4px">L&iacute;mites SLA — ${PL[t.pri||'media']||'Media'}</b>
+                  <span style="opacity:.8">1ª Resp: ${lim.fr} min hábiles</span><br>
+                  <span style="opacity:.8">Resolución: ${lim.res} min hábiles</span><br>
+                  <div style="margin-top:6px;display:flex;gap:8px">
+                    <span>&#128994; &lt;75%</span><span>&#128993; 75–100%</span><span>&#128308; &gt;100%</span>
+                  </div>
+                </div>
+              </div>` : '<span style="font-size:11px;color:#e2e8f0">Sin prioridad</span>'}
+            </td>
+            <td style="padding:11px 14px;color:#cbd5e1;font-size:12px">&rsaquo;</td>
+          </tr>`
+        }).join('')}
+      </tbody>
+    </table>
+  </div>`
+}
+
+function pgDetail(){
+  const t=tickets.find(x=>x.id===tid)
+  if(!t)return '<p style="color:#94a3b8;font-size:14px">Ticket no encontrado.</p>'
+  const STS=['abierto','en_progreso','esperando_usuario','resuelto','cerrado']
+  const PRIS=['baja','media','alta']
+  const allowed=TR[t.st]
+  const visited=new Set(t.hist.map(h=>h.old).filter(Boolean))
+  return `
+  <div style="max-width:680px">
+    <button onclick="go('tickets')" style="display:flex;align-items:center;gap:6px;font-size:13px;color:#64748b;background:none;border:none;cursor:pointer;margin-bottom:20px;padding:0">
+      <svg width="15" height="15" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg> Volver
+    </button>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px">
+      <div>
+        <p style="font-family:monospace;font-size:12px;color:#94a3b8;margin:0 0 4px">${t.num}</p>
+        <h1 style="font-size:18px;font-weight:800;color:#0f172a;margin:0">${t.subj}</h1>
+      </div>
+      ${t.ooh?'<span style="font-size:11px;font-weight:600;background:#fff7ed;color:#c2410c;border:1px solid #fdba74;padding:3px 10px;border-radius:999px">Fuera de horario</span>':''}
+    </div>
+
+    <div class="card" style="margin-bottom:14px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:13px">
+        ${[['Categoría',t.cat],['Urgencia percibida',UL[t.urg]],['Sucursal',BL[t.branch]],['Solicitante',t.creator]].map(([l,v])=>`
+        <div><p style="font-size:11px;color:#94a3b8;margin:0 0 3px">${l}</p><p style="font-weight:600;color:#0f172a;margin:0">${v}</p></div>`).join('')}
+        <div><p style="font-size:11px;color:#94a3b8;margin:0 0 3px">Prioridad</p>${t.pri?`<p style="font-weight:700;color:${t.pri==='alta'?'#dc2626':t.pri==='media'?'#d97706':'#16a34a'};margin:0">${PL[t.pri]}</p>`:'<p style="color:#cbd5e1;margin:0">Sin asignar</p>'}</div>
+        <div><p style="font-size:11px;color:#94a3b8;margin:0 0 3px">Estado</p>${stBadge(t.st)}</div>
+        <div><p style="font-size:11px;color:#94a3b8;margin:0 0 3px">Creado</p><p style="font-weight:600;color:#0f172a;margin:0;font-size:12px">${fdt(t.created)}</p></div>
+        <div><p style="font-size:11px;color:#94a3b8;margin:0 0 3px">1ª Respuesta</p><p style="font-weight:600;color:#0f172a;margin:0;font-size:12px">${fdt(t.fr)}</p></div>
+      </div>
+      ${t.sla?`
+      <div style="border-top:1px solid #f1f5f9;margin-top:16px;padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <p style="font-size:11px;color:#94a3b8;margin:0 0 6px">SLA — 1ª Respuesta</p>
+          ${slaBadge(t.sla.f)}
+          ${t.sla.fp!==null?`<p style="font-size:11px;color:#64748b;margin:5px 0 0">${t.sla.fp}% consumido</p>`:''}
+        </div>
+        <div>
+          <p style="font-size:11px;color:#94a3b8;margin:0 0 6px">SLA — Resolución</p>
+          ${slaBadge(t.sla.r)}
+          ${t.sla.rp!==null?`<p style="font-size:11px;color:#64748b;margin:5px 0 0">${t.sla.rp}% consumido</p>`:''}
+        </div>
+      </div>` : ''}
+    </div>
+
+    <div class="card" style="margin-bottom:14px">
+      <p style="font-size:13px;font-weight:700;color:#0f172a;margin:0 0 10px">Descripción</p>
+      <p style="font-size:13px;color:#475569;line-height:1.65;margin:0">${t.desc}</p>
+    </div>
+
+    <div class="card" style="margin-bottom:14px">
+      <p style="font-size:13px;font-weight:700;color:#0f172a;margin:0 0 16px">Gestión del ticket</p>
+      <div style="margin-bottom:16px">
+        <p style="font-size:11px;color:#94a3b8;margin:0 0 8px;text-transform:uppercase;letter-spacing:.05em;font-weight:600">Asignar prioridad</p>
+        <div style="display:flex;gap:8px">
+          ${PRIS.map(p=>{
+            const frozen=t.pri!==null
+            const cur=t.pri===p
+            let style
+            if(cur) style='background:#1d4ed8;color:white;border-color:#1d4ed8;opacity:1;cursor:default'
+            else if(frozen) style='background:white;color:#d1d5db;border-color:#f3f4f6;opacity:.4;cursor:not-allowed'
+            else style='background:white;color:#374151;border-color:#e2e8f0;cursor:pointer'
+            return `<button ${frozen&&!cur?'disabled':''} onclick="setPri('${t.id}','${p}')"
+              style="${style};padding:7px 14px;border-radius:9px;font-size:12px;font-weight:600;border:1.5px solid;transition:all .15s">
+              ${PL[p]}
+            </button>`
+          }).join('')}
+        </div>
+      </div>
+      <div>
+        <p style="font-size:11px;color:#94a3b8;margin:0 0 8px;text-transform:uppercase;letter-spacing:.05em;font-weight:600">Cambiar estado</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px">
+          ${STS.map(s=>{
+            const cur=t.st===s, ok=allowed.includes(s), vis=visited.has(s)
+            let style, ov=''
+            if(cur) style='background:#f1f5f9;color:#94a3b8;border-color:#e2e8f0;cursor:default'
+            else if(ok) {style='background:white;color:#374151;border-color:#e2e8f0;cursor:pointer';ov=` onmouseover="this.style.borderColor='#2563eb'" onmouseout="this.style.borderColor='#e2e8f0'"`}
+            else if(vis) style='background:#f8fafc;color:#d1d5db;border-color:#f1f5f9;cursor:not-allowed'
+            else style='background:#f8fafc;color:#e2e8f0;border-color:#f8fafc;cursor:not-allowed'
+            return `<button ${!ok?'disabled':''} onclick="setSt('${t.id}','${s}')" ${ov}
+              style="${style};padding:7px 14px;border-radius:9px;font-size:12px;font-weight:600;border:1.5px solid;transition:all .15s">
+              ${SL[s]}
+            </button>`
+          }).join('')}
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p style="font-size:13px;font-weight:700;color:#0f172a;margin:0 0 12px">Historial de estados</p>
+      <ol style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px">
+        ${t.hist.length===0?'<li style="font-size:12px;color:#94a3b8">Sin historial.</li>':
+          t.hist.map(h=>`
+          <li style="display:flex;gap:12px;align-items:flex-start;font-size:12px;color:#64748b">
+            <span style="color:#cbd5e1;white-space:nowrap;flex-shrink:0">${fdt(h.at)}</span>
+            <span>${h.old?`${SL[h.old]} &rarr; `:''}
+              <strong style="color:#0f172a">${SL[h.nw]}</strong>
+              <span style="color:#94a3b8"> &middot; ${h.by}</span>
+            </span>
+          </li>`).join('')}
+      </ol>
+    </div>
+  </div>`
+}
+
+function pgNew(){
+  const activeCats=cats.filter(c=>c.on)
+  return `
+  <div style="max-width:600px">
+    <h1 style="font-size:20px;font-weight:800;color:#0f172a;margin:0 0 20px">Nuevo Ticket</h1>
+    <div class="card">
+      <div style="margin-bottom:16px">
+        <label style="display:block;font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">Categor&iacute;a *</label>
+        <select id="n-cat" style="width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:13px;color:#0f172a;background:white">
+          <option value="">Selecciona una categor&iacute;a</option>
+          ${activeCats.map(c=>`<option value="${c.id}" data-n="${c.name}">${c.name}</option>`).join('')}
+        </select>
+      </div>
+      <div style="margin-bottom:16px">
+        <label style="display:block;font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">Asunto *</label>
+        <input id="n-subj" type="text" maxlength="120" placeholder="Describe brevemente el problema"
+          style="width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:13px;color:#0f172a">
+      </div>
+      <div style="margin-bottom:16px">
+        <label style="display:block;font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">Descripci&oacute;n *</label>
+        <textarea id="n-desc" rows="4" placeholder="Incluye todos los detalles relevantes: qué pasó, cuándo, qué intentaste..."
+          style="width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:13px;color:#0f172a;resize:none;font-family:inherit"></textarea>
+      </div>
+      <div style="margin-bottom:20px">
+        <label style="display:block;font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">&iquest;Qué tan urgente es? *</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+          ${['baja','media','alta'].map(u=>`
+          <label id="ul-${u}" onclick="selUrg('${u}')" style="border:2px solid #e2e8f0;border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all .15s">
+            <span id="ut-${u}" style="font-size:12px;font-weight:700;color:#94a3b8">${UL[u]}</span>
+          </label>`).join('')}
+        </div>
+      </div>
+      <div id="n-err" style="display:none;font-size:12px;color:#dc2626;background:#fef2f2;border:1px solid #fecaca;padding:8px 12px;border-radius:8px;margin-bottom:14px"></div>
+      <div style="display:flex;gap:10px">
+        <button onclick="go('tickets')" style="padding:10px 18px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:13px;font-weight:600;color:#64748b;background:white;cursor:pointer">Cancelar</button>
+        <button onclick="submitTicket()" style="padding:10px 20px;background:#1d4ed8;border:none;border-radius:10px;font-size:13px;font-weight:700;color:white;cursor:pointer">Enviar ticket</button>
+      </div>
+    </div>
+  </div>`
+}
+
+function pgCats(){
+  return `
+  <div style="max-width:560px">
+    <h1 style="font-size:20px;font-weight:800;color:#0f172a;margin:0 0 20px">Categor&iacute;as</h1>
+    <div class="card" style="margin-bottom:14px">
+      <p style="font-size:13px;font-weight:700;color:#0f172a;margin:0 0 12px">Nueva categor&iacute;a</p>
+      <div style="display:flex;gap:8px">
+        <input id="c-name" type="text" placeholder="Nombre de la categoría"
+          style="flex:1;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:13px;color:#0f172a"
+          onkeydown="if(event.key==='Enter')addCat()">
+        <button onclick="addCat()" style="padding:9px 18px;background:#1d4ed8;color:white;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer">Agregar</button>
+      </div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead><tr style="border-bottom:1px solid #f1f5f9">
+          <th style="text-align:left;padding:11px 16px;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase">Nombre</th>
+          <th style="text-align:left;padding:11px 8px;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase">Estado</th>
+          <th style="text-align:right;padding:11px 16px;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase">Acci&oacute;n</th>
+        </tr></thead>
+        <tbody>
+          ${cats.map(c=>`
+          <tr style="border-bottom:1px solid #f8fafc">
+            <td style="padding:11px 16px;font-weight:600;color:#0f172a">${c.name}</td>
+            <td style="padding:11px 8px"><span style="font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid;${c.on?'background:#f0fdf4;color:#16a34a;border-color:#bbf7d0':'background:#f8fafc;color:#94a3b8;border-color:#e2e8f0'}">${c.on?'Activa':'Inactiva'}</span></td>
+            <td style="padding:11px 16px;text-align:right"><button onclick="togCat('${c.id}')" style="font-size:12px;font-weight:600;color:${c.on?'#dc2626':'#2563eb'};background:none;border:none;cursor:pointer">${c.on?'Desactivar':'Activar'}</button></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>`
+}
+
+function pgUsers(){
+  const rc={superadmin:{c:'#7c3aed',b:'#f5f3ff',e:'#ddd6fe',l:'Superadmin'},admin:{c:'#2563eb',b:'#eff6ff',e:'#bfdbfe',l:'Admin'},user:{c:'#374151',b:'#f8fafc',e:'#e2e8f0',l:'Usuario'}}
+  return `
+  <div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <h1 style="font-size:20px;font-weight:800;color:#0f172a;margin:0">Usuarios</h1>
+      <button onclick="alert('En producción: abre el formulario de creación de usuario con la Edge Function create-user.')" style="background:#1d4ed8;color:white;border:none;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer">+ Nuevo usuario</button>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead><tr style="border-bottom:1px solid #f1f5f9">
+          ${['Usuario','Rol','Sucursal','Área','Estado','Acción'].map(h=>`<th style="text-align:left;padding:11px 14px;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em">${h}</th>`).join('')}
+        </tr></thead>
+        <tbody>
+          ${users.map(u=>`
+          <tr style="border-bottom:1px solid #f8fafc;opacity:${u.on?1:0.55}">
+            <td style="padding:11px 14px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:30px;height:30px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#1d4ed8;flex-shrink:0">${ini(u.name)}</div>
+                <div><p style="font-weight:600;color:#0f172a;margin:0">${u.name}</p><p style="font-size:11px;color:#94a3b8;margin:1px 0 0">${u.email}</p></div>
+              </div>
+            </td>
+            <td style="padding:11px 14px"><span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;border:1px solid;background:${rc[u.role].b};color:${rc[u.role].c};border-color:${rc[u.role].e}">${rc[u.role].l}</span></td>
+            <td style="padding:11px 14px;color:#64748b">${BL[u.branch]}</td>
+            <td style="padding:11px 14px;color:#64748b">${u.area||'—'}</td>
+            <td style="padding:11px 14px"><span style="font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid;${u.on?'background:#f0fdf4;color:#16a34a;border-color:#bbf7d0':'background:#f8fafc;color:#94a3b8;border-color:#e2e8f0'}">${u.on?'Activo':'Inactivo'}</span></td>
+            <td style="padding:11px 14px"><button onclick="togUser('${u.id}')" style="font-size:12px;font-weight:600;color:${u.on?'#dc2626':'#16a34a'};background:none;border:none;cursor:pointer">${u.on?'Desactivar':'Activar'}</button></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>`
+}
+
+// ── ACTIONS ─────────────────────────────────────────────────────
+function setPri(id,p){const t=tickets.find(x=>x.id===id);if(!t||t.pri)return;t.pri=p;t.sla={f:'pending',fp:5,r:'pending',rp:1};render()}
+function setSt(id,s){
+  const t=tickets.find(x=>x.id===id);if(!t||!TR[t.st].includes(s))return
+  const old=t.st; t.st=s
+  if(!t.fr&&s!=='abierto')t.fr=new Date().toISOString()
+  if(s==='resuelto'&&!t.res)t.res=new Date().toISOString()
+  if(s==='cerrado'&&!t.cls)t.cls=new Date().toISOString()
+  t.hist.push({id:'h'+Date.now(),old,nw:s,at:new Date().toISOString(),by:'Mi Proyecto'})
+  render()
+}
+function selUrg(u){
+  urg=u
+  document.querySelectorAll('[id^="ul-"]').forEach(e=>{e.style.borderColor='#e2e8f0'})
+  document.querySelectorAll('[id^="ut-"]').forEach(e=>{e.style.color='#94a3b8'})
+  const lbl=document.getElementById('ul-'+u)
+  if(lbl){lbl.style.borderColor='#2563eb';document.getElementById('ut-'+u).style.color='#1d4ed8'}
+}
+function submitTicket(){
+  const catEl=document.getElementById('n-cat')
+  const cid=catEl?.value; const cn=catEl?.options[catEl?.selectedIndex]?.dataset.n
+  const subj=document.getElementById('n-subj')?.value.trim()
+  const desc=document.getElementById('n-desc')?.value.trim()
+  const err=document.getElementById('n-err')
+  if(!cid||!subj||!desc||!urg){err.textContent='Completa todos los campos obligatorios.';err.style.display='block';return}
+  err.style.display='none'
+  const num='TK-2026-'+String(tickets.length+1).padStart(4,'0')
+  const nt={id:String(Date.now()),num,subj,desc,cat:cn,catId:cid,urg,pri:null,st:'abierto',created:new Date().toISOString(),fr:null,res:null,cls:null,branch:'ecuador',creator:'Mi Proyecto',sla:null,ooh:false,hist:[{id:'h'+Date.now(),old:null,nw:'abierto',at:new Date().toISOString(),by:'Sistema'}]}
+  tickets.push(nt); urg=null
+  showModal(`
+    <div style="width:58px;height:58px;border-radius:50%;background:#eff6ff;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+      <svg width="26" height="26" fill="none" viewBox="0 0 24 24"><path stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    </div>
+    <p style="font-size:11px;color:#94a3b8;font-family:monospace;margin:0 0 4px">Ticket creado exitosamente</p>
+    <p style="font-size:32px;font-weight:900;color:#1d4ed8;margin:0 0 6px">${num}</p>
+    <p style="font-size:14px;font-weight:600;color:#0f172a;margin:0 0 12px">${subj}</p>
+    <p style="font-size:12px;color:#64748b;margin:0 0 4px"><b>Categoría:</b> ${cn}</p>
+    <p style="font-size:12px;color:#64748b;margin:0 0 20px"><b>Urgencia:</b> ${UL[nt.urg]}</p>
+    <p style="font-size:12px;color:#64748b;margin:0 0 24px">El ticket fue enviado al área de sistemas.</p>
+    <button onclick="closeModal();go('tickets')" style="background:#1d4ed8;color:white;border:none;border-radius:10px;padding:11px 28px;font-size:13px;font-weight:700;cursor:pointer">Ver mis tickets</button>
+  `)
+}
+function addCat(){const inp=document.getElementById('c-name');const n=inp?.value.trim();if(!n)return;cats.push({id:'c'+Date.now(),name:n,on:true});inp.value='';render()}
+function togCat(id){const c=cats.find(x=>x.id===id);if(c){c.on=!c.on;render()}}
+function togUser(id){const u=users.find(x=>x.id===id);if(u){u.on=!u.on;render()}}
+function showModal(html){document.getElementById('modal-box').innerHTML=html;document.getElementById('modal').style.display='flex'}
+function closeModal(){document.getElementById('modal').style.display='none'}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()})
+</script>
+</body>
+</html>
