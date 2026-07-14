@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ronald Vásquez — Desarrollador de Software & Ingeniero de IA</title>
-<meta name="description" content="Desarrollador full-stack especializado en integraciones SOAP/REST, automatización de procesos logísticos, IA aplicada y ecosistema Microsoft 365.">
+<meta name="description" content="Jefe de Sistemas con 10+ años liderando áreas de TI end-to-end: ERP, integraciones SOAP/REST, automatización de procesos logísticos, infraestructura e IA aplicada.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -168,13 +168,30 @@ h2{font-size:clamp(30px,4.5vw,46px);font-weight:600;letter-spacing:-.025em;margi
 .tag{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);border:1px solid var(--line-soft);padding:5px 11px;border-radius:2px;transition:color .2s,border-color .2s}
 .tag:hover{color:var(--text);border-color:var(--steel)}
 
+/* experience */
+.exp-list{display:flex;flex-direction:column}
+.exp{padding:44px 0;border-top:1px solid var(--line-soft)}
+.exp:first-of-type{border-top:none;padding-top:0}
+.exp-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px 14px;margin-bottom:8px}
+.exp-role{font-size:22px;font-weight:600;letter-spacing:-.01em}
+.exp-meta{font-size:12px;color:var(--steel);letter-spacing:.03em}
+.exp-org{color:var(--muted);margin-bottom:24px;max-width:64ch;font-size:16px}
+.exp-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;margin-bottom:26px}
+.exp-stat{border:1px solid var(--line-soft);border-radius:4px;padding:14px 16px;transition:border-color .25s}
+.exp-stat:hover{border-color:var(--blue)}
+.exp-stat b{display:block;font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;color:var(--blue);line-height:1.2}
+.exp-stat span{display:block;margin-top:6px;font-size:11.5px;color:var(--muted);line-height:1.4}
+.exp ul{list-style:none;display:flex;flex-direction:column;gap:11px;max-width:68ch}
+.exp li{position:relative;padding-left:20px;color:var(--muted);font-size:15.5px;line-height:1.55}
+.exp li::before{content:"▸";position:absolute;left:0;top:0;color:var(--blue)}
+
 /* projects */
+.badge{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue-soft);border:1px solid var(--line-soft);padding:3px 9px;border-radius:2px;margin-left:12px;vertical-align:middle;letter-spacing:.03em}
 .proj{display:grid;grid-template-columns:56px 1fr;gap:28px;padding:38px 0;border-top:1px solid var(--line-soft);transition:padding-left .25s}
 .proj:hover{padding-left:8px}
 .proj:first-of-type{border-top:none;padding-top:0}
 .proj .idx{font-family:'JetBrains Mono',monospace;color:var(--steel);font-size:14px;padding-top:6px}
 .proj h3{font-size:23px;font-weight:600;margin-bottom:12px;letter-spacing:-.01em}
-.proj h3 .badge{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue-soft);border:1px solid var(--line-soft);padding:3px 9px;border-radius:2px;margin-left:12px;vertical-align:middle;letter-spacing:.03em}
 .proj p{color:var(--muted);margin-bottom:16px;max-width:64ch;font-size:16px}
 .proj .stack{display:flex;flex-wrap:wrap;gap:14px}
 .proj .stack span{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--blue);opacity:.85}
@@ -209,6 +226,7 @@ footer{padding:36px 0;text-align:center;color:var(--steel);font-family:'JetBrain
     <div class="brand">ronald<span>.vasquez</span></div>
     <nav class="nav">
       <a href="#sobre">Perfil</a>
+      <a href="#experiencia">Experiencia</a>
       <a href="#skills">Stack</a>
       <a href="#proyectos">Proyectos</a>
       <a href="#contacto">Contacto</a>
@@ -260,12 +278,56 @@ footer{padding:36px 0;text-align:center;color:var(--steel);font-family:'JetBrain
       <aside class="facts">
         <div class="row"><span class="k">UBICACIÓN</span><span class="v">Guayaquil, Ecuador</span></div>
         <div class="row"><span class="k">ZONA</span><span class="v">UTC-5 (US overlap)</span></div>
-        <div class="row"><span class="k">ROL</span><span class="v">Full-stack / Integrator</span></div>
+        <div class="row"><span class="k">ROL</span><span class="v">Jefe de Sistemas / Integrator</span></div>
         <div class="row"><span class="k">FOCO</span><span class="v">SOAP · REST · Automatización</span></div>
         <div class="row"><span class="k">IDIOMAS</span><span class="v">Español · Inglés</span></div>
         <div class="row"><span class="k">MODO</span><span class="v">Remoto / Freelance</span></div>
         <div class="row"><span class="k">CERTIFICACIÓN</span><span class="v">Auditor Interno ISO/IEC 27001:2022</span></div>
       </aside>
+    </div>
+  </div>
+</section>
+
+<section id="experiencia">
+  <div class="wrap">
+    <div class="sec-label">Experiencia</div>
+    <h2>10+ años liderando áreas de sistemas</h2>
+    <p class="sec-intro">De único responsable de TI a nivel operativo a arquitecto de las plataformas que sostienen la operación. Esto es lo que he liderado de punta a punta.</p>
+
+    <div class="exp-list">
+      <div class="exp reveal">
+        <div class="exp-head">
+          <div class="exp-role">Jefe de Sistemas <span class="badge">Gloval Shipping</span></div>
+          <div class="exp-meta mono">Actual · Logística & Courier</div>
+        </div>
+        <p class="exp-org">Único responsable del área de sistemas para una operación de courier distribuida en 4 sedes (Ecuador, Perú, Panamá, USA).</p>
+        <ul>
+          <li>Primer inventario y control formal de activos tecnológicos, backups y correo, sobre un área sin documentación previa.</li>
+          <li>Automatizaciones e interfaces sobre el sistema heredado Magaya para dar visibilidad de datos a finanzas y operaciones.</li>
+          <li>Liderazgo de arquitectura, integraciones y soporte técnico de una plataforma logística centralizada (courier, clientes, liquidaciones de embarque) en desarrollo activo.</li>
+        </ul>
+      </div>
+
+      <div class="exp reveal">
+        <div class="exp-head">
+          <div class="exp-role">Jefe de Sistemas <span class="badge">Total Seafood</span></div>
+          <div class="exp-meta mono">2017 – 2025 · Industria camaronera</div>
+        </div>
+        <p class="exp-org">Único responsable del área de sistemas de un grupo empresarial multisede (5 empresas camaroneras), con un equipo de 6 personas a cargo: desarrollo, soporte, infraestructura y análisis de procesos.</p>
+        <div class="exp-stats">
+          <div class="exp-stat"><b>0</b><span>incidentes de red al mes tras la modernización (antes 11–12)</span></div>
+          <div class="exp-stat"><b>249</b><span>cámaras Hikvision en la red de videovigilancia</span></div>
+          <div class="exp-stat"><b>1 día → real-time</b><span>en registro de información de producción</span></div>
+          <div class="exp-stat"><b>~500</b><span>colaboradores en el grupo empresarial</span></div>
+        </div>
+        <ul>
+          <li>Implementación y administración end-to-end de un ERP multiárea: contabilidad, finanzas, RRHH, nómina, tributario y producción.</li>
+          <li>Liderazgo del sistema de producción de camarón (compra → producto terminado), con trazabilidad completa y dashboards gerenciales en tiempo real.</li>
+          <li>Diseño y despliegue de videovigilancia con certificación de seguridad VAS y retención de 30 días con backup.</li>
+          <li>Modernización de red (fibra óptica + radio, de 5 a 11 puntos en cascada) y migración a switches administrables para doble contingencia.</li>
+          <li>Rollout de Microsoft 365 (Teams, Outlook, Office) con gobernanza centralizada para toda la organización.</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -394,7 +456,7 @@ footer{padding:36px 0;text-align:center;color:var(--steel);font-family:'JetBrain
   <div class="wrap">
     <div class="sec-label" style="text-align:center">Contacto</div>
     <h2>¿Tienes un sistema que necesita conectarse?</h2>
-    <p>Disponible para proyectos freelance y posiciones remotas. Escríbeme y lo conversamos.</p>
+    <p>Disponible para proyectos freelance y posiciones remotas. También ofrezco auditoría de procesos, formación en IA aplicada y asesoría en automatización para pequeños negocios. Escríbeme y lo conversamos.</p>
     <div class="links">
       <a class="btn btn-primary" href="mailto:ronaldvasquezp@gmail.com">Enviar correo</a>
       <a class="btn btn-ghost" href="https://wa.me/593997295474" target="_blank" rel="noopener">WhatsApp</a>
