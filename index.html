@@ -578,112 +578,184 @@
     </section>
 
     <!-- Demos Interactivas -->
-    <section id="demos" class="py-24 px-6 md:px-12 lg:px-24 border-t border-white/5">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-            <div>
-                <span class="font-mono text-accent text-sm mb-2 block">01 / DEMOS</span>
-                <h2 class="font-display text-4xl md:text-5xl font-medium">Demos Interactivas</h2>
-                <div class="section-accent-line"></div>
-                <p class="text-secondary mt-4 max-w-md">Prototipos en Vivo & Funcionales. Explora las aplicaciones
-                    interactivas desplegadas en el repositorio. Puedes iniciar sesión y probar la funcionalidad completa
-                    directamente en tu navegador.</p>
-            </div>
+    <section id="demos" class="py-24 px-6 md:px-12 lg:px-24 border-t border-white/5 relative overflow-hidden">
+        <!-- Sutil fondo decorativo para la sección -->
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] pointer-events-none">
         </div>
 
-        <div class="grid md:grid-cols-2 gap-6">
-            <!-- Demo 1 -->
-            <div
-                class="project-card scroll-reveal interactive-element group p-8 rounded-2xl bg-surface border border-white/5 relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-4">
-                    <span
-                        class="px-3 py-1 text-xs font-mono bg-green-500/10 text-green-400 rounded-full border border-green-500/20 flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span> Demo Lista
-                    </span>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <!-- Header de la sección -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                <div class="max-w-2xl text-left">
+                    <span class="font-mono text-accent text-sm mb-3 block tracking-wider">01 / DEMOS EN VIVO</span>
+                    <h2 class="font-display text-4xl md:text-5xl font-medium text-white mb-4">Demos Interactivas</h2>
+                    <div class="h-1 w-20 bg-gradient-to-r from-accent to-purple-500 rounded-full mb-6"></div>
+                    <p class="text-secondary text-lg leading-relaxed">
+                        Prototipos funcionales desplegados. Explora las aplicaciones interactivas directamente en tu
+                        navegador: inicia sesión, navega y prueba la funcionalidad completa sin restricciones.
+                    </p>
                 </div>
-                <div class="mb-6 text-accent">
-                    <i data-lucide="ticket" class="w-8 h-8"></i>
-                </div>
-                <h3 class="font-display text-2xl font-medium mb-3">TicketStone — Sistema de Tickets TI</h3>
-                <p class="text-secondary text-sm leading-relaxed mb-6">Plataforma de gestión de incidentes con
-                    seguimiento de SLA en horario hábil, jerarquía de roles, tableros de KPIs y métricas operativas en
-                    tiempo real.</p>
-                <div class="flex flex-wrap gap-2 mb-8">
-                    <span class="text-xs font-mono px-2 py-1 bg-white/5 rounded">React</span>
-                    <span class="text-xs font-mono px-2 py-1 bg-white/5 rounded">Tailwind CSS</span>
-                    <span class="text-xs font-mono px-2 py-1 bg-white/5 rounded">SLA Engine</span>
-                    <span class="text-xs font-mono px-2 py-1 bg-white/5 rounded">Dashboard KPIs</span>
-                </div>
-                <a href="./demo-TicketStone/"
-                    class="char-split-hover interactive-element inline-flex items-center gap-2 text-sm font-medium hover:text-accent transition-colors">
-                    Lanzar Demo TicketStone <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-                </a>
             </div>
 
-            <!-- Demo 2 -->
-            <div
-                class="project-card scroll-reveal interactive-element group p-8 rounded-2xl bg-surface border border-white/5 relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-4">
-                    <span
-                        class="px-3 py-1 text-xs font-mono bg-green-500/10 text-green-400 rounded-full border border-green-500/20 flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span> Demo Lista
-                    </span>
+            <!-- GRILLA DE 3 TARJETAS -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Demo 1: TicketStone -->
+                <div
+                    class="project-card scroll-reveal interactive-element group relative bg-surface/40 backdrop-blur-sm border border-white/10 rounded-2xl p-7 flex flex-col justify-between overflow-hidden hover:border-accent/40 transition-all duration-500 hover:-translate-y-1 text-left">
+                    <div
+                        class="absolute -top-16 -right-16 w-40 h-40 bg-accent/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                    </div>
+
+                    <div class="absolute top-5 right-5">
+                        <span
+                            class="px-3 py-1 text-[10px] font-mono uppercase tracking-wider bg-green-500/10 text-green-400 rounded-full border border-green-500/20 flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span> Demo Lista
+                        </span>
+                    </div>
+
+                    <div>
+                        <div class="mb-6 text-accent">
+                            <i data-lucide="ticket" class="w-9 h-9"></i>
+                        </div>
+
+                        <h3
+                            class="font-display text-xl font-semibold mb-3 text-white group-hover:text-accent transition-colors">
+                            TicketStone</h3>
+                        <p class="text-secondary text-sm leading-relaxed mb-6">
+                            Plataforma de gestión de incidentes con seguimiento de SLA en horario hábil, jerarquía de
+                            roles,
+                            tableros de KPIs y métricas operativas en tiempo real.
+                        </p>
+
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span
+                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary">React</span>
+                            <span
+                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary">Tailwind</span>
+                            <span
+                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary">SLA
+                                Engine</span>
+                        </div>
+                    </div>
+
+                    <!-- Footer del Card -->
+                    <div
+                        class="flex flex-row items-center justify-start gap-3 w-full text-left pt-4 mt-auto border-t border-white/5">
+                        <a href="./demo-TicketStone/"
+                            class="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-accent transition-colors group/link">
+                            <span>Lanzar Demo TicketStone</span>
+                            <i data-lucide="arrow-up-right"
+                                class="w-4 h-4 flex-shrink-0 group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform"></i>
+                        </a>
+                    </div>
                 </div>
-                <div class="mb-6 text-accent">
-                    <i data-lucide="credit-card" class="w-8 h-8"></i>
+
+                <!-- Demo 2: R-SolutionsERP Tesorería -->
+                <div
+                    class="project-card scroll-reveal interactive-element group relative bg-surface/40 backdrop-blur-sm border border-white/10 rounded-2xl p-7 flex flex-col justify-between overflow-hidden hover:border-purple-400/40 transition-all duration-500 hover:-translate-y-1 text-left">
+                    <div
+                        class="absolute -top-16 -right-16 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                    </div>
+
+                    <div class="absolute top-5 right-5">
+                        <span
+                            class="px-3 py-1 text-[10px] font-mono uppercase tracking-wider bg-green-500/10 text-green-400 rounded-full border border-green-500/20 flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span> Demo Lista
+                        </span>
+                    </div>
+
+                    <div>
+                        <div class="mb-6 text-purple-400">
+                            <i data-lucide="credit-card" class="w-9 h-9"></i>
+                        </div>
+
+                        <h3
+                            class="font-display text-xl font-semibold mb-3 text-white group-hover:text-purple-300 transition-colors">
+                            R-SolutionsERP <span class="text-secondary font-normal text-base block mt-1">Tesorería &
+                                Pagos</span>
+                        </h3>
+                        <p class="text-secondary text-sm leading-relaxed mb-6">
+                            Módulo financiero: flujo de aprobación y autorización de lotes de pago, cuentas por pagar
+                            por
+                            vencer, gestión de comprobantes y control bancario.
+                        </p>
+
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span
+                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary">Flask</span>
+                            <span
+                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary">PostgreSQL</span>
+                            <span
+                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary">Tesorería</span>
+                        </div>
+                    </div>
+
+                    <!-- Footer del Card -->
+                    <div
+                        class="flex flex-row items-center justify-start gap-3 w-full text-left pt-4 mt-auto border-t border-white/5">
+                        <a href="./demo-Python/"
+                            class="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-purple-300 transition-colors group/link">
+                            <span>Lanzar Demo ERP</span>
+                            <i data-lucide="arrow-up-right"
+                                class="w-4 h-4 flex-shrink-0 group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform"></i>
+                        </a>
+                    </div>
                 </div>
-                <h3 class="font-display text-2xl font-medium mb-3">R-SolutionsERP — Tesorería & Pagos</h3>
-                <p class="text-secondary text-sm leading-relaxed mb-6">Módulo financiero y de tesorería: flujo de
-                    aprobación y autorización de lotes de pago, cuentas por pagar por vencer, gestión de comprobantes y
-                    control bancario.</p>
-                <div class="flex flex-wrap gap-2 mb-8">
-                    <span class="text-xs font-mono px-2 py-1 bg-white/5 rounded">Flask Architecture</span>
-                    <span class="text-xs font-mono px-2 py-1 bg-white/5 rounded">PostgreSQL</span>
-                    <span class="text-xs font-mono px-2 py-1 bg-white/5 rounded">Tesorería</span>
-                    <span class="text-xs font-mono px-2 py-1 bg-white/5 rounded">Lotes de Pago</span>
+
+                <!-- Demo 3: R-SolutionsERP N8N -->
+                <div
+                    class="project-card scroll-reveal interactive-element group relative bg-surface/40 backdrop-blur-sm border border-white/10 rounded-2xl p-7 flex flex-col justify-between overflow-hidden hover:border-cyan-400/40 transition-all duration-500 hover:-translate-y-1 text-left">
+                    <div
+                        class="absolute -top-16 -right-16 w-40 h-40 bg-cyan-400/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                    </div>
+
+                    <div class="absolute top-5 right-5">
+                        <span
+                            class="px-3 py-1 text-[10px] font-mono uppercase tracking-wider bg-green-500/10 text-green-400 rounded-full border border-green-500/20 flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span> Demo Lista
+                        </span>
+                    </div>
+
+                    <div>
+                        <div class="mb-6 text-cyan-400">
+                            <i data-lucide="bot" class="w-9 h-9"></i>
+                        </div>
+
+                        <h3
+                            class="font-display text-xl font-semibold mb-3 text-white group-hover:text-cyan-300 transition-colors">
+                            R-SolutionsERP <span class="text-secondary font-normal text-base block mt-1">N8N No-Code &
+                                IA</span>
+                        </h3>
+                        <p class="text-secondary text-sm leading-relaxed mb-6">
+                            Flujo automatizado que detecta anomalías en el ERP. Un Agente de IA analiza el problema en
+                            tiempo real y alerta proactivamente al equipo de soporte.
+                        </p>
+
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span
+                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary">n8n</span>
+                            <span
+                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary">PostgreSQL</span>
+                            <span
+                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary">Agentes
+                                IA</span>
+                        </div>
+                    </div>
+
+                    <!-- Footer del Card -->
+                    <div
+                        class="flex flex-row items-center justify-start gap-3 w-full text-left pt-4 mt-auto border-t border-white/5">
+                        <a href="./demo-n8n%20Workflow/"
+                            class="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-cyan-300 transition-colors group/link">
+                            <span>Lanzar Demo N8N</span>
+                            <i data-lucide="arrow-up-right"
+                                class="w-4 h-4 flex-shrink-0 group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform"></i>
+                        </a>
+                    </div>
                 </div>
-                <div class="flex gap-4">
-                    <a href="./demo-Python/"
-                        class="char-split-hover interactive-element inline-flex items-center gap-2 text-sm font-medium hover:text-accent transition-colors">
-                        Lanzar Demo ERP <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-                    </a>
-                    <a href="https://github.com/revp17/r-solutions-erp"
-                        class="char-split-hover interactive-element inline-flex items-center gap-2 text-sm font-medium text-secondary hover:text-white transition-colors">
-                        Código <i data-lucide="github" class="w-4 h-4"></i>
-                    </a>
-                </div>
-            </div>
-            <!-- Demo 3 -->
-            <div
-                class="project-card scroll-reveal interactive-element group p-8 rounded-2xl bg-surface border border-white/5 relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-4">
-                    <span
-                        class="px-3 py-1 text-xs font-mono bg-green-500/10 text-green-400 rounded-full border border-green-500/20 flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span> Demo Lista
-                    </span>
-                </div>
-                <div class="mb-6 text-accent">
-                    <i data-lucide="bot" class="w-8 h-8"></i>
-                </div>
-                <h3 class="font-display text-2xl font-medium mb-3">R-SolutionsERP — N8N No Code</h3>
-                <p class="text-secondary text-sm leading-relaxed mb-6">Flujo básico de que alerta problemas en un ERP,
-                    el Agente IA analiza el problema
-                    y alerta al equipo de soporte</p>
-                <div class="flex flex-wrap gap-2 mb-8">
-                    <span class="text-xs font-mono px-2 py-1 bg-white/5 rounded">N8N</span>
-                    <span class="text-xs font-mono px-2 py-1 bg-white/5 rounded">PostgreSQL</span>
-                    <span class="text-xs font-mono px-2 py-1 bg-white/5 rounded">Agentes de IA</span>
-                    <span class="text-xs font-mono px-2 py-1 bg-white/5 rounded">HTTP</span>
-                </div>
-                <div class="flex gap-4">
-                    <a href="./demo-n8n Workflow/"
-                        class="char-split-hover interactive-element inline-flex items-center gap-2 text-sm font-medium hover:text-accent transition-colors">
-                        Lanzar Demo N8N <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-                    </a>
-                    <a href="https://github.com/revp17/r-solutions-erp"
-                        class="char-split-hover interactive-element inline-flex items-center gap-2 text-sm font-medium text-secondary hover:text-white transition-colors">
-                        Código <i data-lucide="github" class="w-4 h-4"></i>
-                    </a>
-                </div>
+
             </div>
         </div>
     </section>
