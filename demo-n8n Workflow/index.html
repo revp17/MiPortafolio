@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>n8n — Workflow de Agente IA Local</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Inter,Segoe UI,Arial,sans-serif;background:#171717;color:#ddd}
+:root{--bg:#171717;--panel:#202020;--panel2:#252525;--line:#3b3b3b;--muted:#999;--text:#eee;--orange:#ff6d5a;--green:#22c55e;--blue:#3b82f6;--purple:#a855f7;--yellow:#eab308}
+.app{height:100vh;display:grid;grid-template-rows:48px 1fr 34px}
+.top{background:#1d1d1d;border-bottom:1px solid #333;display:flex;align-items:center;padding:0 15px;gap:14px}
+.logo{font-weight:800;font-size:20px;color:#ff6d5a;letter-spacing:-1px}.crumb{color:#aaa;font-size:13px}.crumb b{color:#eee}.spacer{flex:1}.exec{background:#ff6d5a;color:#fff;border:0;border-radius:5px;padding:7px 14px;font-weight:700}.icon{font-size:18px;color:#aaa}
+.body{display:grid;grid-template-columns:58px 1fr 310px;min-height:0}
+.left{background:#1d1d1d;border-right:1px solid #333;display:flex;align-items:center;flex-direction:column;gap:24px;padding-top:18px;color:#aaa}.left span{font-size:19px}.left span.active{color:#ff6d5a}
+.canvas{position:relative;overflow:hidden;background-color:#181818;background-image:radial-gradient(#303030 1px,transparent 1px);background-size:22px 22px}
+.workflow{position:absolute;inset:0;transform-origin:0 0}
+.edge{position:absolute;height:2px;background:#777;transform-origin:left center;z-index:1}.edge:after{content:"";position:absolute;right:-2px;top:-4px;border-left:8px solid #777;border-top:5px solid transparent;border-bottom:5px solid transparent}
+.node{position:absolute;width:150px;background:#252525;border:1px solid #454545;border-radius:8px;box-shadow:0 5px 16px #0008;z-index:2;cursor:pointer}
+.node:hover{border-color:#777}.node.selected{border-color:#ff6d5a;box-shadow:0 0 0 1px #ff6d5a55,0 7px 20px #0009}
+.nhead{height:44px;display:flex;align-items:center;padding:0 10px;border-bottom:1px solid #3b3b3b;gap:9px}.ico{width:27px;height:27px;border-radius:6px;display:grid;place-items:center;font-size:14px;font-weight:800;color:white}.ntitle{font-size:12px;font-weight:700;line-height:15px}.nbody{padding:8px 10px;font-size:10px;color:#999;line-height:14px}.ok{color:#54d17b}.wait{color:#f4c84a}.fail{color:#ff7566}
+.start .ico{background:#22c55e}.webhook .ico{background:#8b5cf6}.code .ico{background:#eab308;color:#111}.db .ico{background:#2563eb}.agent .ico{background:#a855f7}.if .ico{background:#f97316}.slack .ico{background:#36c5f0}.mail .ico{background:#3b82f6}.http .ico{background:#64748b}.end .ico{background:#22c55e}
+.badge{position:absolute;right:-8px;top:-8px;background:#22c55e;color:#07130a;border-radius:10px;padding:2px 6px;font-size:9px;font-weight:800}
+.minimap{position:absolute;right:18px;bottom:18px;width:180px;height:105px;background:#202020e8;border:1px solid #444;border-radius:5px;padding:8px}.mini-title{font-size:9px;color:#999;margin-bottom:5px}.mini-map{height:74px;position:relative;background:#191919}.m{position:absolute;width:18px;height:7px;border-radius:2px;background:#666}.m.a{background:#22c55e}.m.b{background:#a855f7}.m.c{background:#3b82f6}.m.d{background:#eab308}
+.side{background:#202020;border-left:1px solid #333;display:flex;flex-direction:column;min-width:0}.sidehead{padding:14px;border-bottom:1px solid #333;font-size:14px;font-weight:700;display:flex;justify-content:space-between}.sidebody{padding:14px;overflow:auto}.label{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.6px;margin:15px 0 6px}.value{background:#191919;border:1px solid #383838;border-radius:4px;padding:8px;font-size:11px;color:#ccc;line-height:16px}.pill{display:inline-block;border-radius:10px;padding:2px 7px;background:#243b2a;color:#5ee083;font-size:9px;font-weight:700}.json{font-family:Consolas,monospace;font-size:9px;white-space:pre-wrap;color:#aaa}
+.bottom{background:#1d1d1d;border-top:1px solid #333;display:flex;align-items:center;padding:0 15px;gap:20px;font-size:10px;color:#888}.bottom b{color:#ccc}.runbar{margin-left:auto}.runbar .pill{margin-left:8px}
+.toast{position:absolute;left:50%;top:66px;transform:translateX(-50%);background:#242424;border:1px solid #444;border-radius:6px;padding:9px 15px;font-size:11px;opacity:0;transition:.25s;z-index:10;box-shadow:0 8px 25px #0008}.toast.show{opacity:1}
+.legend{position:absolute;left:18px;bottom:18px;background:#202020dd;border:1px solid #3b3b3b;border-radius:5px;padding:9px 11px;font-size:9px;color:#999;z-index:4}.legend span{margin-right:10px}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div class="logo">n8n</div><div class="crumb">Workflows / <b>Incidente ERP — Agente IA Local</b></div><div class="spacer"></div><span class="icon">↗</span><span class="icon">⚙</span><button class="exec" onclick="runWorkflow()">Execute workflow</button></header>
+<div class="body">
+<nav class="left"><span class="active">⌘</span><span>⌁</span><span>▦</span><span>◫</span><span>?</span></nav>
+<main class="canvas" id="canvas">
+<div class="toast" id="toast">Workflow ejecutado correctamente</div>
+<div class="workflow" id="workflow">
+<!-- conexiones -->
+<div class="edge" style="left:178px;top:215px;width:72px;transform:rotate(0deg)"></div>
+<div class="edge" style="left:400px;top:215px;width:72px;transform:rotate(0deg)"></div>
+<div class="edge" style="left:622px;top:215px;width:72px;transform:rotate(0deg)"></div>
+<div class="edge" style="left:844px;top:215px;width:72px;transform:rotate(0deg)"></div>
+<div class="edge" style="left:1066px;top:215px;width:72px;transform:rotate(0deg)"></div>
+<div class="edge" style="left:1288px;top:215px;width:72px;transform:rotate(0deg)"></div>
+<div class="edge" style="left:1510px;top:215px;width:72px;transform:rotate(0deg)"></div>
+<div class="edge" style="left:1732px;top:215px;width:72px;transform:rotate(0deg)"></div>
+<div class="edge" style="left:1954px;top:215px;width:72px;transform:rotate(0deg)"></div>
+<div class="edge" style="left:2176px;top:215px;width:72px;transform:rotate(0deg)"></div>
+
+<!-- rama IF -->
+<div class="edge" style="left:1213px;top:259px;width:2px;height:105px;transform:rotate(0deg)"></div>
+<div class="edge" style="left:1288px;top:393px;width:72px;transform:rotate(0deg)"></div>
+<div class="edge" style="left:1362px;top:437px;width:2px;height:85px;transform:rotate(0deg)"></div>
+<div class="edge" style="left:1362px;top:527px;width:72px;transform:rotate(0deg)"></div>
+<div class="edge" style="left:1436px;top:393px;width:74px;transform:rotate(-28deg)"></div>
+
+<div class="node start" style="left:28px;top:190px" onclick="selectNode(this,'Manual Trigger')"><div class="nhead"><div class="ico">▶</div><div class="ntitle">Manual Trigger</div></div><div class="nbody">Inicio de simulación<br><span class="ok">● Executed</span></div></div>
+<div class="node webhook" style="left:250px;top:190px" onclick="selectNode(this,'Webhook — Alerta ERP')"><div class="nhead"><div class="ico">⌁</div><div class="ntitle">Webhook — Alerta ERP</div></div><div class="nbody">POST /erp/alert<br><span class="ok">● 200 OK</span></div></div>
+<div class="node code" style="left:472px;top:190px" onclick="selectNode(this,'Normalizar incidente')"><div class="nhead"><div class="ico">&lt;/&gt;</div><div class="ntitle">Normalizar incidente</div></div><div class="nbody">Extrae métricas y contexto<br><span class="ok">● Executed</span></div></div>
+<div class="node db" style="left:694px;top:190px" onclick="selectNode(this,'PostgreSQL — Historial')"><div class="nhead"><div class="ico">DB</div><div class="ntitle">PostgreSQL — Historial</div></div><div class="nbody">Busca incidentes similares<br><span class="ok">● 4 rows</span></div></div>
+<div class="node agent" style="left:916px;top:190px" onclick="selectNode(this,'Agente IA Local — Ollama')"><div class="nhead"><div class="ico">AI</div><div class="ntitle">Agente IA Local</div></div><div class="nbody">Ollama · modelo local<br><span class="ok">● 2.8s</span></div><div class="badge">AI</div></div>
+<div class="node code" style="left:1138px;top:190px" onclick="selectNode(this,'Parsear diagnóstico')"><div class="nhead"><div class="ico">&lt;/&gt;</div><div class="ntitle">Parsear diagnóstico</div></div><div class="nbody">Valida JSON del agente<br><span class="ok">● Valid</span></div></div>
+<div class="node if" style="left:1360px;top:190px" onclick="selectNode(this,'IF — ¿Crítico?')"><div class="nhead"><div class="ico">IF</div><div class="ntitle">IF — ¿Crítico?</div></div><div class="nbody">severity === CRITICAL<br><span class="wait">● Branch</span></div></div>
+<div class="node slack" style="left:1510px;top:350px" onclick="selectNode(this,'Slack — NOC')"><div class="nhead"><div class="ico">S</div><div class="ntitle">Slack — NOC</div></div><div class="nbody">Notifica incidente crítico<br><span class="ok">● Sent</span></div></div>
+<div class="node http" style="left:1510px;top:190px" onclick="selectNode(this,'HTTP — Ejecutar remediación')"><div class="nhead"><div class="ico">↗</div><div class="ntitle">HTTP — Remediación</div></div><div class="nbody">Reinicia servicio ERP<br><span class="ok">● 202 Accepted</span></div></div>
+<div class="node db" style="left:1732px;top:190px" onclick="selectNode(this,'SQL — Verificar recuperación')"><div class="nhead"><div class="ico">DB</div><div class="ntitle">SQL — Verificar recuperación</div></div><div class="nbody">Comprueba sesiones y latencia<br><span class="ok">● Healthy</span></div></div>
+<div class="node agent" style="left:1954px;top:190px" onclick="selectNode(this,'Agente IA — Informe final')"><div class="nhead"><div class="ico">AI</div><div class="ntitle">Agente IA — Informe</div></div><div class="nbody">Resume causa y acciones<br><span class="ok">● Generated</span></div><div class="badge">AI</div></div>
+<div class="node mail" style="left:2176px;top:190px" onclick="selectNode(this,'Email — Resumen ejecutivo')"><div class="nhead"><div class="ico">✉</div><div class="ntitle">Email — Resumen ejecutivo</div></div><div class="nbody">Envía reporte a IT<br><span class="ok">● Delivered</span></div></div>
+<div class="node end" style="left:2398px;top:190px" onclick="selectNode(this,'Fin — Incidente resuelto')"><div class="nhead"><div class="ico">✓</div><div class="ntitle">Fin — Resuelto</div></div><div class="nbody">Ticket actualizado<br><span class="ok">● SUCCESS</span></div></div>
+</div>
+<div class="legend"><span><i class="dot" style="background:#22c55e"></i>Ejecutado</span><span><i class="dot" style="background:#a855f7"></i>IA local</span><span><i class="dot" style="background:#eab308"></i>Código</span><span><i class="dot" style="background:#3b82f6"></i>Datos</span></div>
+<div class="minimap"><div class="mini-title">MiniMap</div><div class="mini-map">
+<div class="m a" style="left:5px;top:32px"></div><div class="m b" style="left:45px;top:32px"></div><div class="m d" style="left:70px;top:32px"></div><div class="m c" style="left:92px;top:32px"></div><div class="m b" style="left:115px;top:32px"></div><div class="m c" style="left:138px;top:32px"></div>
+</div></div>
+</main>
+<aside class="side"><div class="sidehead"><span id="panelTitle">Workflow</span><span>×</span></div><div class="sidebody" id="panel">
+<div class="label">Descripción</div><div class="value">Detección, diagnóstico y remediación automática de un incidente ficticio del ERP mediante un agente IA ejecutado localmente.</div>
+<div class="label">Estado</div><div class="value"><span class="pill">ACTIVE</span><br><br>Última ejecución: hace 12 s<br>Duración: 8.7 s<br>Nodos ejecutados: 13</div>
+<div class="label">Resultado</div><div class="value">Incidente crítico detectado y resuelto automáticamente. Se notificó al equipo NOC y se generó un resumen ejecutivo.</div>
+<div class="label">Datos ficticios</div><div class="value json">{
+  "incident": "ERP-INC-2841",
+  "server": "ERP-SRV-02",
+  "cpu": "94%",
+  "ram": "91%",
+  "latency_ms": 842,
+  "severity": "CRITICAL",
+  "service": "erp-api"
+}</div>
+</div></aside>
+</div>
+<footer class="bottom"><span>Environment: <b>Development</b></span><span>Owner: <b>IT Automation</b></span><span>Version: <b>1.0</b></span><div class="runbar">Last execution <span class="pill">SUCCESS</span></div></footer>
+</div>
+<script>
+const data={
+"Manual Trigger":["Manual Trigger","Inicio de la simulación del incidente.","Entrada ficticia generada por el usuario.","Status: Executed"],
+"Webhook — Alerta ERP":["Webhook — Alerta ERP","Recibe una alerta del sistema de monitoreo.","POST /erp/alert · HTTP 200","Payload: ERP-INC-2841"],
+"Normalizar incidente":["Normalizar incidente","Transforma la alerta en un objeto estándar.","Servidor: ERP-SRV-02 · Servicio: erp-api","Métricas: CPU 94% · RAM 91% · Latencia 842ms"],
+"PostgreSQL — Historial":["PostgreSQL — Historial","Consulta incidentes anteriores para dar contexto al agente.","4 incidentes similares encontrados.","Último patrón: bloqueo de sesiones SQL"],
+"Agente IA Local — Ollama":["Agente IA Local — Ollama","Analiza métricas, historial y contexto operativo.","Modelo local ficticio: llama3.2","Diagnóstico: saturación + bloqueo de sesiones"],
+"Parsear diagnóstico":["Parsear diagnóstico","Valida y estructura la respuesta del agente.","JSON válido · confidence: 0.93","severity: CRITICAL"],
+"IF — ¿Crítico?":["IF — ¿Crítico?","Evalúa si el incidente requiere remediación inmediata.","Condición: severity === CRITICAL","Resultado: TRUE"],
+"HTTP — Ejecutar remediación":["HTTP — Remediación","Solicita al servicio interno de automatización la acción correctiva.","Acción: reiniciar erp-api + limpiar conexiones huérfanas","HTTP 202 Accepted"],
+"Slack — NOC":["Slack — NOC","Envía una alerta al canal operativo.","#noc-alertas · incidente ERP-INC-2841","Notificación enviada"],
+"SQL — Verificar recuperación":["SQL — Verificar recuperación","Comprueba si el ERP volvió a condiciones normales.","Sesiones: 18 · Latencia: 42ms · Estado: HEALTHY","Recuperación confirmada"],
+"Agente IA — Informe final":["Agente IA — Informe","Genera una explicación no técnica del incidente y las acciones realizadas.","Causa probable + impacto + remediación + evidencia","Informe generado"],
+"Email — Resumen ejecutivo":["Email — Resumen ejecutivo","Distribuye el resumen final a responsables de IT.","Asunto: ERP-INC-2841 resuelto automáticamente","Entrega simulada: OK"],
+"Fin — Incidente resuelto":["Fin — Resuelto","Cierra el flujo y deja el incidente listo para auditoría.","Ticket: RESOLVED · Automatización: SUCCESS","Duración total: 8.7 s"]
+};
+function selectNode(el,name){
+ document.querySelectorAll('.node').forEach(n=>n.classList.remove('selected'));el.classList.add('selected');
+ const d=data[name]||[name,"Nodo del workflow.","Datos ficticios.","Executed"];
+ document.getElementById('panelTitle').textContent=d[0];
+ document.getElementById('panel').innerHTML='<div class="label">Función</div><div class="value">'+d[1]+'</div><div class="label">Operación</div><div class="value">'+d[2]+'</div><div class="label">Resultado</div><div class="value"><span class="pill">'+d[3]+'</span></div>';
+}
+function runWorkflow(){
+ const toast=document.getElementById('toast');toast.textContent='Ejecutando workflow…';toast.classList.add('show');
+ const nodes=[...document.querySelectorAll('.node')];nodes.forEach(n=>n.classList.remove('selected'));
+ nodes.forEach((n,i)=>setTimeout(()=>{n.classList.add('selected');if(i===nodes.length-1){toast.textContent='Workflow ejecutado correctamente · SUCCESS';setTimeout(()=>toast.classList.remove('show'),1800)}},i*180));
+}
+let scale=.62, ox=15, oy=40, dragging=false,sx,sy;
+const wf=document.getElementById('workflow'), canvas=document.getElementById('canvas');
+function draw(){wf.style.transform=`translate(${ox}px,${oy}px) scale(${scale})`}
+canvas.addEventListener('wheel',e=>{e.preventDefault();scale=Math.max(.3,Math.min(1.1,scale*(e.deltaY<0?1.08:.92)));draw()},{passive:false});
+canvas.addEventListener('mousedown',e=>{if(e.target.closest('.node'))return;dragging=true;sx=e.clientX-ox;sy=e.clientY-oy});
+window.addEventListener('mouseup',()=>dragging=false);
+window.addEventListener('mousemove',e=>{if(dragging){ox=e.clientX-sx;oy=e.clientY-sy;draw()}});
+draw();
+</script>
+</body>
+</html>
