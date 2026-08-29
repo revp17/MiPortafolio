@@ -9,9 +9,35 @@
     <meta name="keywords" content="Systems Architect, AI, Integrations, Automation, Python, FastAPI, React, Ecuador">
     <meta name="author" content="Ronald Vásquez">
     <title>Ronald Vásquez — Lead Systems Engineer & AI Architect</title>
+    <link rel="canonical" href="https://revp17.github.io/MiPortafolio/">
+
+    <!-- Favicon: monograma RV en SVG (sin archivo adicional) -->
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%230a0a0a%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2243%22%20font-family%3D%22Arial%2C%20Helvetica%2C%20sans-serif%22%20font-weight%3D%22700%22%20font-size%3D%2226%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22middle%22%3ERV%3C/text%3E%3Crect%20x%3D%2218%22%20y%3D%2249%22%20width%3D%2228%22%20height%3D%223%22%20rx%3D%221.5%22%20fill%3D%22%233b82f6%22/%3E%3C/svg%3E">
+    <meta name="theme-color" content="#0a0a0a">
+
+    <!-- Open Graph / redes sociales -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://revp17.github.io/MiPortafolio/">
+    <meta property="og:title" content="Ronald Vásquez — Lead Systems Engineer & AI Architect">
+    <meta property="og:description"
+        content="Especialista en integraciones, automatización y arquitectura de sistemas en Guayaquil, Ecuador.">
+    <meta property="og:image" content="https://revp17.github.io/MiPortafolio/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="es_EC">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ronald Vásquez — Lead Systems Engineer & AI Architect">
+    <meta name="twitter:description"
+        content="Especialista en integraciones, automatización y arquitectura de sistemas en Guayaquil, Ecuador.">
+    <meta name="twitter:image" content="https://revp17.github.io/MiPortafolio/og-image.jpg">
 
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS: compilado estáticamente (ver package.json → npm run build:css).
+         Si agregas clases nuevas al HTML, hay que recompilar o no tendrán estilo. -->
+    <link rel="stylesheet" href="assets/css/tailwind.css">
 
     <!-- Google Fonts: Space Grotesk (Títulos) & Inter (Cuerpo) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,38 +46,47 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
         rel="stylesheet">
 
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Configuración de Tailwind -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Space Grotesk', 'sans-serif'],
-                    },
-                    colors: {
-                        background: '#0a0a0a',
-                        surface: '#141414',
-                        primary: '#ffffff',
-                        secondary: '#a1a1aa',
-                        accent: '#3b82f6',
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Lucide Icons (versión fijada: @latest puede romper de un día para otro) -->
+    <script src="https://unpkg.com/lucide@0.462.0"></script>
 
     <style>
+        /* Todo este bloque va dentro de @layer components: Tailwind v4 compila
+           sus utilidades en @layer utilities, que en CSS moderno SIEMPRE pierde
+           frente a una regla sin capa (por eso .hidden/.md:block dejaban de
+           funcionar contra .char-split-hover sin este wrapper). */
+        @layer components {
+
         /* ==========================================
            BASE
            ========================================== */
+        html {
+            color-scheme: dark;
+            /* Fallback antes de que el JS mida el nav real (ver script junto
+               al preloader); así el margen del marquee no depende de un
+               número copiado a mano que se desactualiza si cambia el nav. */
+            --nav-h: 65px;
+        }
+
         body {
             background-color: #0a0a0a;
             color: #ffffff;
-            overflow-x: hidden;
+            /* clip, no hidden: recorta el sangrado horizontal intencional de
+               los blobs decorativos (-left-20/-right-20) sin crear un nuevo
+               contenedor de scroll ni afectar position:sticky. */
+            overflow-x: clip;
+        }
+
+        /* Foco de teclado visible: el navegador no aporta uno legible sobre
+           fondo casi negro, y el cursor custom más abajo oculta el del mouse. */
+        :focus-visible {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+            border-radius: 2px;
+        }
+
+        /* Evita que el nav fijo tape el título al saltar por ancla (#demos, etc.) */
+        section[id] {
+            scroll-margin-top: 90px;
         }
 
         ::-webkit-scrollbar {
@@ -112,15 +147,19 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
+        /* El selector .cursor-ready sólo lo agrega el JS del cursor custom
+           cuando arranca con éxito (ver más abajo). Si GSAP falla o el script
+           no corre, nunca se aplica "cursor:none" y el cursor del sistema
+           sigue visible. */
         @media (pointer: fine) {
 
-            body,
-            a,
-            button,
-            .interactive-element,
-            .char-split-hover,
-            .stack-tag,
-            .project-item {
+            .cursor-ready body,
+            .cursor-ready a,
+            .cursor-ready button,
+            .cursor-ready .interactive-element,
+            .cursor-ready .char-split-hover,
+            .cursor-ready .stack-tag,
+            .cursor-ready .project-item {
                 cursor: none;
             }
         }
@@ -140,7 +179,8 @@
         }
 
         .scroll-reveal {
-            opacity: 0;
+            /* Oculto solo si GSAP logra inicializar (ver script abajo);
+               por defecto queda visible para no depender de un CDN externo. */
         }
 
         /* Tarjetas de demos: spotlight que sigue al mouse */
@@ -414,10 +454,18 @@
                 transition-duration: 0.01ms !important;
             }
         }
+
+        } /* /@layer components */
     </style>
 </head>
 
 <body class="antialiased selection:bg-white selection:text-black">
+
+    <!-- Skip link: visualmente oculto salvo con foco de teclado -->
+    <a href="#main-content"
+        class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-white focus:text-black focus:rounded-full focus:outline focus:outline-2 focus:outline-accent">
+        Saltar al contenido principal
+    </a>
 
     <!-- Barra de progreso de scroll -->
     <div class="scroll-progress" id="scrollProgress"></div>
@@ -431,8 +479,31 @@
         <div class="preloader-bar"></div>
     </div>
 
+    <!-- Red de seguridad sin dependencias: si algún CDN (GSAP, etc.) falla,
+         el preloader no debe quedar bloqueando la página para siempre. -->
+    <script>
+        (function () {
+            var hidden = false;
+            function forceReveal() {
+                if (hidden) return;
+                hidden = true;
+                var pre = document.getElementById('preloader');
+                if (pre) pre.style.display = 'none';
+                document.body.style.cursor = 'auto';
+            }
+            window.addEventListener('load', function () {
+                setTimeout(function () {
+                    // Si a los 4s el preloader sigue visible, algo falló (CDN caído, etc.)
+                    if (typeof gsap === 'undefined') forceReveal();
+                }, 4000);
+            });
+            // Tope absoluto: pase lo que pase, nunca más de 6s de pantalla negra.
+            setTimeout(forceReveal, 6000);
+        })();
+    </script>
+
     <!-- Navegación Flotante -->
-    <nav
+    <nav aria-label="Principal"
         class="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex justify-between items-center backdrop-blur-md bg-background/70 border-b border-white/5">
         <div class="font-display font-bold text-lg tracking-tight interactive-element">RONALD<span
                 class="text-secondary"> VÁSQUEZ</span></div>
@@ -449,13 +520,93 @@
                 class="char-split-hover interactive-element hover:text-primary transition-colors duration-300">Contacto</a>
         </div>
         <a href="#contacto"
-            class="char-split-hover interactive-element hidden md:block px-4 py-2 text-sm border border-white/20 rounded-full hover:bg-white hover:text-black transition-all duration-300">
+            class="char-split-hover interactive-element hidden md:block px-4 py-2 text-sm border border-white/20 rounded-full hover:bg-white hover:text-black transition-colors duration-300">
             Disponible para Consultoría
         </a>
+
+        <!-- Botón hamburguesa: solo móvil -->
+        <button type="button" id="mobileMenuBtn" class="md:hidden interactive-element p-2 -mr-2"
+            aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
+            <i data-lucide="menu" aria-hidden="true" id="mobileMenuIconOpen" class="w-6 h-6"></i>
+            <i data-lucide="x" aria-hidden="true" id="mobileMenuIconClose" class="w-6 h-6 hidden"></i>
+        </button>
     </nav>
 
+    <!-- Panel de navegación móvil -->
+    <div id="mobileMenu"
+        class="mobile-menu-panel md:hidden fixed top-[65px] left-0 right-0 z-40 bg-background/95 backdrop-blur-md border-b border-white/10"
+        hidden>
+        <div class="flex flex-col text-base font-medium text-secondary px-6 py-6 gap-1">
+            <a href="#demos" class="interactive-element hover:text-primary py-3 border-b border-white/5">Demos</a>
+            <a href="#proyectos"
+                class="interactive-element hover:text-primary py-3 border-b border-white/5">Proyectos</a>
+            <a href="#experiencia"
+                class="interactive-element hover:text-primary py-3 border-b border-white/5">Trayectoria</a>
+            <a href="#stack" class="interactive-element hover:text-primary py-3 border-b border-white/5">Stack</a>
+            <a href="#contacto"
+                class="interactive-element hover:text-primary py-3 border-b border-white/5">Contacto</a>
+            <a href="#contacto"
+                class="interactive-element mt-4 px-4 py-2.5 text-sm text-center border border-white/20 rounded-full hover:bg-white hover:text-black transition-colors duration-300">
+                Disponible para Consultoría
+            </a>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            // Altura real del nav -> --nav-h, en vez de copiar un número a
+            // mano en el margen del marquee (que quedaba desactualizado si
+            // el padding o el contenido del nav cambiaban).
+            var nav = document.querySelector('nav[aria-label="Principal"]');
+            function syncNavHeight() {
+                if (nav) document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px');
+            }
+            syncNavHeight();
+            window.addEventListener('resize', syncNavHeight);
+
+            // Año del footer: que nunca vuelva a quedar pisado en 2024.
+            // <footer> todavía no existe a esta altura del documento, así
+            // que se espera a que el HTML termine de parsearse.
+            document.addEventListener('DOMContentLoaded', function () {
+                var yearEl = document.getElementById('footer-year');
+                if (yearEl) yearEl.textContent = new Date().getFullYear();
+            });
+        })();
+
+        (function () {
+            var btn = document.getElementById('mobileMenuBtn');
+            var menu = document.getElementById('mobileMenu');
+            if (!btn || !menu) return;
+
+            function setOpen(isOpen) {
+                // Los íconos se consultan en cada llamada (no se cachean al
+                // cargar) porque lucide.createIcons() los reemplaza por <svg>
+                // más abajo en el documento; una referencia cacheada antes de
+                // eso apuntaría a un nodo ya desprendido del DOM.
+                var iconOpen = document.getElementById('mobileMenuIconOpen');
+                var iconClose = document.getElementById('mobileMenuIconClose');
+                menu.hidden = !isOpen;
+                btn.setAttribute('aria-expanded', String(isOpen));
+                btn.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+                if (iconOpen) iconOpen.classList.toggle('hidden', isOpen);
+                if (iconClose) iconClose.classList.toggle('hidden', !isOpen);
+            }
+
+            btn.addEventListener('click', function () {
+                setOpen(menu.hidden);
+            });
+
+            menu.querySelectorAll('a').forEach(function (a) {
+                a.addEventListener('click', function () { setOpen(false); });
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && !menu.hidden) setOpen(false);
+            });
+        })();
+    </script>
+
     <!-- Marquee Superior -->
-    <div class="marquee-container py-3 border-b border-white/5 bg-surface mt-[65px]">
+    <div class="marquee-container py-3 border-b border-white/5 bg-surface mt-[var(--nav-h)]">
         <div class="marquee-content text-xs font-mono text-secondary uppercase tracking-widest">
             RONALD VASQUEZ • SYSTEMS ARCHITECT • INTEGRATIONS & AI • CONSULTING • AUTOMATION • RONALD VASQUEZ • SYSTEMS
             ARCHITECT • INTEGRATIONS & AI • CONSULTING • AUTOMATION • RONALD VASQUEZ • SYSTEMS ARCHITECT • INTEGRATIONS
@@ -466,9 +617,10 @@
         </div>
     </div>
 
+    <main id="main-content">
     <!-- Hero Section -->
     <section
-        class="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 pt-14 pb-12 relative overflow-hidden">
+        class="min-h-dvh flex flex-col justify-center px-6 md:px-12 lg:px-24 pt-14 pb-12 relative overflow-hidden">
         <!-- Parallax Background Elements -->
         <div
             class="parallax-bg absolute top-1/4 -left-20 w-96 h-96 bg-accent/10 rounded-full blur-[100px] pointer-events-none">
@@ -488,7 +640,7 @@
 
             <!-- 2. Title -->
             <h1
-                class="hero-anim font-display text-5xl md:text-7xl lg:text-8xl font-medium leading-[0.95] tracking-tight mb-5">
+                class="hero-anim font-display text-5xl md:text-7xl lg:text-8xl font-medium leading-[0.95] tracking-tight mb-5 text-balance">
                 <div class="overflow-hidden"><span class="block reveal-text-inner md:text-left text-center">Conecto
                         sistemas que</span></div>
                 <div class="overflow-hidden"><span
@@ -507,11 +659,14 @@
                         class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10 pointer-events-none opacity-60">
                     </div>
 
-                    <!-- La Imagen -->
-                    <img src="imagen inicial.png" alt="Ronald Vásquez - Arquitecto de Sistemas e Integraciones"
-                        fetchpriority="high" decoding="async"
-                        onerror="this.closest('.hero-image-container').classList.add('img-fallback'); this.remove();"
-                        class="hero-image w-full h-full object-contain transition-transform duration-1000 ease-out group-hover:scale-100" />
+                    <!-- La Imagen (WebP con fallback JPEG; original PNG de 2.4MB reemplazado) -->
+                    <picture>
+                        <source srcset="hero-ronald.webp" type="image/webp">
+                        <img src="hero-ronald.jpg" alt="Ronald Vásquez - Arquitecto de Sistemas e Integraciones"
+                            width="1600" height="879" fetchpriority="high" decoding="async"
+                            onerror="this.closest('.hero-image-container').classList.add('img-fallback'); this.remove();"
+                            class="hero-image w-full h-full object-contain transition-transform duration-1000 ease-out group-hover:scale-100" />
+                    </picture>
                 </div>
 
                 <!-- Decorative glows behind the image -->
@@ -528,37 +683,37 @@
                 <span class="block w-8 h-px bg-gradient-to-r from-accent to-purple-400"></span>
                 <p class="text-xs font-mono uppercase tracking-[0.2em] text-secondary">Role</p>
             </div>
-            <h2
+            <p
                 class="hero-anim font-display text-xl md:text-2xl font-semibold tracking-tight mb-6 md:text-left text-center">
                 <span class="bg-gradient-to-r from-white via-white to-white/60 bg-clip-text text-transparent">Líder de
                     TI</span>
                 <span class="text-white/30 mx-2 font-light">|</span>
                 <span class="bg-gradient-to-r from-accent to-purple-400 bg-clip-text text-transparent">Infraestructura,
                     Soporte &amp; Transformación Digital</span>
-            </h2>
+            </p>
 
-            <!-- 4. Description -->
+            <!-- 5. Description -->
             <p
                 class="hero-anim text-secondary text-lg md:text-xl max-w-2xl leading-relaxed mb-8 md:mx-0 mx-auto text-center md:text-left">
-                Con 10+ años liderando áreas de TI, gestionando infraestructura y redes, y brindando soporte técnico
+                Con 10+&nbsp;años liderando áreas de TI, gestionando infraestructura y redes, y brindando soporte técnico
                 a usuarios tanto presencial como remoto. Track record comprobado en transformación digital: convierto
                 procesos manuales críticos de negocio en sistemas automatizados con IA, medibles y escalables.
             </p>
 
-            <!-- 5. Buttons -->
+            <!-- 6. Buttons -->
             <div class="hero-anim flex flex-col gap-4 items-start">
                 <!-- Botón 1: Ver Demos en Vivo -->
                 <a href="#demos" data-split="true"
-                    class="magnetic-btn interactive-element group inline-flex items-center justify-center gap-2 px-6 py-2.5 text-sm bg-white text-black font-medium rounded-full hover:bg-gray-200 transition-all duration-300">
+                    class="magnetic-btn interactive-element group inline-flex items-center justify-center gap-2 px-6 py-2.5 text-sm bg-white text-black font-medium rounded-full hover:bg-gray-200">
 
                     <span>Ver Demos en Vivo</span>
-                    <i data-lucide="arrow-up-right"
+                    <i data-lucide="arrow-up-right" aria-hidden="true"
                         class="w-4 h-4 flex-shrink-0 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
                 </a>
 
                 <!-- Botón 2: Iniciar Conversación -->
                 <a href="#contacto" data-split="true"
-                    class="magnetic-btn interactive-element inline-flex items-center justify-center px-6 py-2.5 text-sm border border-white/20 rounded-full hover:bg-white/5 transition-all duration-300"
+                    class="magnetic-btn interactive-element inline-flex items-center justify-center px-6 py-2.5 text-sm border border-white/20 rounded-full hover:bg-white/5"
                     style="min-width: 200px;">
                     Iniciar Conversación
                 </a>
@@ -569,7 +724,7 @@
         <div class="hero-anim parallax-element absolute bottom-12 right-6 md:right-12 lg:right-24 hidden lg:block">
             <div class="font-mono text-xs text-secondary space-y-2 text-right opacity-60">
                 <div class="flex items-center justify-end gap-2">● Arquitectura en Producción · Pipeline Sync OK</div>
-                <div>Latency: &lt;120ms</div>
+                <div>Latency:&nbsp;&lt;120ms</div>
                 <div>Magaya SOAP ──► Postgres</div>
                 <div>MS Graph ──► Cloud Outlook</div>
                 <div>n8n + Docker ──► PDF Gotenberg</div>
@@ -589,7 +744,7 @@
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
                 <div class="max-w-2xl text-left">
                     <span class="font-mono text-accent text-sm mb-3 block tracking-wider">01 / DEMOS EN VIVO</span>
-                    <h2 class="font-display text-4xl md:text-5xl font-medium text-white mb-4">Demos Interactivas</h2>
+                    <h2 class="font-display text-4xl md:text-5xl font-medium text-white mb-4 text-balance">Demos Interactivas</h2>
                     <div class="h-1 w-20 bg-gradient-to-r from-accent to-purple-500 rounded-full mb-6"></div>
                     <p class="text-secondary text-lg leading-relaxed">
                         Prototipos funcionales desplegados. Explora las aplicaciones interactivas directamente en tu
@@ -603,7 +758,7 @@
 
                 <!-- Demo 1: TicketStone -->
                 <div
-                    class="project-card scroll-reveal interactive-element group relative bg-surface/40 backdrop-blur-sm border border-white/10 rounded-2xl p-7 flex flex-col justify-between overflow-hidden hover:border-accent/40 transition-all duration-500 hover:-translate-y-1 text-left">
+                    class="project-card scroll-reveal interactive-element group relative bg-surface/40 backdrop-blur-sm border border-white/10 rounded-2xl p-7 flex flex-col justify-between overflow-hidden hover:border-accent/40 hover:-translate-y-1 text-left">
                     <div
                         class="absolute -top-16 -right-16 w-40 h-40 bg-accent/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
                     </div>
@@ -617,7 +772,7 @@
 
                     <div>
                         <div class="mb-6 text-accent">
-                            <i data-lucide="ticket" class="w-9 h-9"></i>
+                            <i data-lucide="ticket" aria-hidden="true" class="w-9 h-9"></i>
                         </div>
 
                         <h3
@@ -631,11 +786,11 @@
 
                         <div class="flex flex-wrap gap-2 mb-6">
                             <span
-                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary">React</span>
+                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary" translate="no">React</span>
                             <span
-                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary">Tailwind</span>
+                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary" translate="no">Tailwind</span>
                             <span
-                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary">SLA
+                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary" translate="no">SLA
                                 Engine</span>
                         </div>
                     </div>
@@ -646,7 +801,7 @@
                         <a href="./demo-TicketStone/"
                             class="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-accent transition-colors group/link">
                             <span>Lanzar Demo TicketStone</span>
-                            <i data-lucide="arrow-up-right"
+                            <i data-lucide="arrow-up-right" aria-hidden="true"
                                 class="w-4 h-4 flex-shrink-0 group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform"></i>
                         </a>
                     </div>
@@ -654,7 +809,7 @@
 
                 <!-- Demo 2: R-SolutionsERP Tesorería -->
                 <div
-                    class="project-card scroll-reveal interactive-element group relative bg-surface/40 backdrop-blur-sm border border-white/10 rounded-2xl p-7 flex flex-col justify-between overflow-hidden hover:border-purple-400/40 transition-all duration-500 hover:-translate-y-1 text-left">
+                    class="project-card scroll-reveal interactive-element group relative bg-surface/40 backdrop-blur-sm border border-white/10 rounded-2xl p-7 flex flex-col justify-between overflow-hidden hover:border-purple-400/40 hover:-translate-y-1 text-left">
                     <div
                         class="absolute -top-16 -right-16 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
                     </div>
@@ -668,7 +823,7 @@
 
                     <div>
                         <div class="mb-6 text-purple-400">
-                            <i data-lucide="credit-card" class="w-9 h-9"></i>
+                            <i data-lucide="credit-card" aria-hidden="true" class="w-9 h-9"></i>
                         </div>
 
                         <h3
@@ -684,11 +839,11 @@
 
                         <div class="flex flex-wrap gap-2 mb-6">
                             <span
-                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary">Flask</span>
+                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary" translate="no">Flask</span>
                             <span
-                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary">PostgreSQL</span>
+                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary" translate="no">PostgreSQL</span>
                             <span
-                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary">Tesorería</span>
+                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary" translate="no">Tesorería</span>
                         </div>
                     </div>
 
@@ -698,7 +853,7 @@
                         <a href="./demo-Python/"
                             class="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-purple-300 transition-colors group/link">
                             <span>Lanzar Demo ERP</span>
-                            <i data-lucide="arrow-up-right"
+                            <i data-lucide="arrow-up-right" aria-hidden="true"
                                 class="w-4 h-4 flex-shrink-0 group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform"></i>
                         </a>
                     </div>
@@ -706,7 +861,7 @@
 
                 <!-- Demo 3: R-SolutionsERP N8N -->
                 <div
-                    class="project-card scroll-reveal interactive-element group relative bg-surface/40 backdrop-blur-sm border border-white/10 rounded-2xl p-7 flex flex-col justify-between overflow-hidden hover:border-cyan-400/40 transition-all duration-500 hover:-translate-y-1 text-left">
+                    class="project-card scroll-reveal interactive-element group relative bg-surface/40 backdrop-blur-sm border border-white/10 rounded-2xl p-7 flex flex-col justify-between overflow-hidden hover:border-cyan-400/40 hover:-translate-y-1 text-left">
                     <div
                         class="absolute -top-16 -right-16 w-40 h-40 bg-cyan-400/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
                     </div>
@@ -720,7 +875,7 @@
 
                     <div>
                         <div class="mb-6 text-cyan-400">
-                            <i data-lucide="bot" class="w-9 h-9"></i>
+                            <i data-lucide="bot" aria-hidden="true" class="w-9 h-9"></i>
                         </div>
 
                         <h3
@@ -735,11 +890,11 @@
 
                         <div class="flex flex-wrap gap-2 mb-6">
                             <span
-                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary">n8n</span>
+                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary" translate="no">n8n</span>
                             <span
-                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary">PostgreSQL</span>
+                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary" translate="no">PostgreSQL</span>
                             <span
-                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary">Agentes
+                                class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-secondary" translate="no">Agentes
                                 IA</span>
                         </div>
                     </div>
@@ -750,7 +905,7 @@
                         <a href="./demo-n8n%20Workflow/"
                             class="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-cyan-300 transition-colors group/link">
                             <span>Lanzar Demo N8N</span>
-                            <i data-lucide="arrow-up-right"
+                            <i data-lucide="arrow-up-right" aria-hidden="true"
                                 class="w-4 h-4 flex-shrink-0 group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform"></i>
                         </a>
                     </div>
@@ -764,7 +919,7 @@
     <section id="proyectos" class="py-24 px-6 md:px-12 lg:px-24 border-t border-white/5">
         <div class="mb-16">
             <span class="font-mono text-accent text-sm mb-2 block">02 / PROYECTOS</span>
-            <h2 class="font-display text-4xl md:text-5xl font-medium">Proyectos Seleccionados</h2>
+            <h2 class="font-display text-4xl md:text-5xl font-medium text-balance">Proyectos Seleccionados</h2>
             <div class="section-accent-line"></div>
             <p class="text-secondary mt-4 max-w-2xl">Ingeniería & Soluciones de Producción. Sistemas construidos de
                 punta a punta: desde la integración con APIs legacy hasta tableros ejecutivos y agentes autónomos.</p>
@@ -780,7 +935,7 @@
                         <div>
                             <h3
                                 class="font-display text-xl md:text-2xl font-medium mb-2 group-hover:text-accent transition-colors flex items-center gap-3">
-                                ETL de Embarques Magaya Producción <i data-lucide="arrow-up-right"
+                                ETL de Embarques Magaya Producción <i data-lucide="arrow-up-right" aria-hidden="true"
                                     class="project-arrow w-5 h-5"></i></h3>
                             <p class="text-secondary text-sm max-w-xl">Extracción automatizada de datos desde la API
                                 SOAP de Magaya hacia PostgreSQL con parsing recursivo de jerarquías master/house y
@@ -789,13 +944,13 @@
                     </div>
                     <div class="flex gap-2 md:justify-end">
                         <span
-                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">Python</span>
+                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">Python</span>
                         <span
-                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">SOAP</span>
+                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">SOAP</span>
                         <span
-                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">PostgreSQL</span>
+                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">PostgreSQL</span>
                         <span
-                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">ETL</span>
+                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">ETL</span>
                     </div>
                 </div>
             </div>
@@ -809,7 +964,7 @@
                         <div>
                             <h3
                                 class="font-display text-xl md:text-2xl font-medium mb-2 group-hover:text-accent transition-colors flex items-center gap-3">
-                                Facturación Electrónica SRI Ecuador <i data-lucide="arrow-up-right"
+                                Facturación Electrónica SRI Ecuador <i data-lucide="arrow-up-right" aria-hidden="true"
                                     class="project-arrow w-5 h-5"></i></h3>
                             <p class="text-secondary text-sm max-w-xl">Motor integral de comprobantes digitales
                                 (facturas, retenciones, guías de remisión, notas de crédito/débito) conectado con los
@@ -818,13 +973,13 @@
                     </div>
                     <div class="flex gap-2 md:justify-end">
                         <span
-                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">FastAPI</span>
+                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">FastAPI</span>
                         <span
-                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">Electron</span>
-                        <span class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">XML
+                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">Electron</span>
+                        <span class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">XML
                             Sign</span>
                         <span
-                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">PostgreSQL</span>
+                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">PostgreSQL</span>
                     </div>
                 </div>
             </div>
@@ -838,7 +993,7 @@
                         <div>
                             <h3
                                 class="font-display text-xl md:text-2xl font-medium mb-2 group-hover:text-accent transition-colors flex items-center gap-3">
-                                Agente de Gestión M365 & Storage Autónomo <i data-lucide="arrow-up-right"
+                                Agente de Gestión M365 & Storage Autónomo <i data-lucide="arrow-up-right" aria-hidden="true"
                                     class="project-arrow w-5 h-5"></i></h3>
                             <p class="text-secondary text-sm max-w-xl">Agente en Python para administración centralizada
                                 de buzones Exchange y cuotas de almacenamiento: autenticación Azure AD, Microsoft Graph
@@ -847,13 +1002,13 @@
                     </div>
                     <div class="flex gap-2 md:justify-end">
                         <span
-                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">Microsoft
+                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">Microsoft
                             Graph</span>
-                        <span class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">Azure
+                        <span class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">Azure
                             AD</span>
                         <span
-                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">SQLite</span>
-                        <span class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">Task
+                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">SQLite</span>
+                        <span class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">Task
                             Scheduler</span>
                     </div>
                 </div>
@@ -868,7 +1023,7 @@
                         <div>
                             <h3
                                 class="font-display text-xl md:text-2xl font-medium mb-2 group-hover:text-accent transition-colors flex items-center gap-3">
-                                Generación de Reportes PDF en n8n DevOps <i data-lucide="arrow-up-right"
+                                Generación de Reportes PDF en n8n DevOps <i data-lucide="arrow-up-right" aria-hidden="true"
                                     class="project-arrow w-5 h-5"></i></h3>
                             <p class="text-secondary text-sm max-w-xl">Pipelines n8n orquestados con contenedores Docker
                                 para la compilación dinámica de reportes PDF con Gotenberg, adjuntos automatizados y
@@ -877,13 +1032,13 @@
                     </div>
                     <div class="flex gap-2 md:justify-end">
                         <span
-                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">n8n</span>
+                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">n8n</span>
                         <span
-                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">Docker</span>
+                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">Docker</span>
                         <span
-                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">Gotenberg</span>
+                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">Gotenberg</span>
                         <span
-                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">Webhooks</span>
+                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">Webhooks</span>
                     </div>
                 </div>
             </div>
@@ -897,7 +1052,7 @@
                         <div>
                             <h3
                                 class="font-display text-xl md:text-2xl font-medium mb-2 group-hover:text-accent transition-colors flex items-center gap-3">
-                                Plataforma de Leads & Prospección con LLM IA Aplicada <i data-lucide="arrow-up-right"
+                                Plataforma de Leads & Prospección con LLM IA Aplicada <i data-lucide="arrow-up-right" aria-hidden="true"
                                     class="project-arrow w-5 h-5"></i></h3>
                             <p class="text-secondary text-sm max-w-xl">Herramienta comercial para el mercado
                                 norteamericano con agente de cotización con LLMs, prospección web estructurada y alertas
@@ -905,12 +1060,12 @@
                         </div>
                     </div>
                     <div class="flex gap-2 md:justify-end">
-                        <span class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">LLM /
+                        <span class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">LLM /
                             OpenAI</span>
-                        <span class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">Telegram
+                        <span class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">Telegram
                             Bot</span>
                         <span
-                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">PostgreSQL</span>
+                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">PostgreSQL</span>
                     </div>
                 </div>
             </div>
@@ -924,7 +1079,7 @@
                         <div>
                             <h3
                                 class="font-display text-xl md:text-2xl font-medium mb-2 group-hover:text-accent transition-colors flex items-center gap-3">
-                                Módulo de Cuentas por Pagar y Gestión Bancaria <i data-lucide="arrow-up-right"
+                                Módulo de Cuentas por Pagar y Gestión Bancaria <i data-lucide="arrow-up-right" aria-hidden="true"
                                     class="project-arrow w-5 h-5"></i></h3>
                             <p class="text-secondary text-sm max-w-xl">Flujo financiero end-to-end: extrae cuentas por
                                 pagar no gestionadas, selecciona y genera las cuentas por pagar, clasifica los pagos y
@@ -934,11 +1089,11 @@
                     </div>
                     <div class="flex gap-2 md:justify-end">
                         <span
-                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">Flask</span>
+                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">Flask</span>
                         <span
-                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">PostgreSQL</span>
+                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">PostgreSQL</span>
                         <span
-                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5">Tesorería</span>
+                            class="text-xs font-mono px-3 py-1 bg-white/5 rounded-full border border-white/5" translate="no">Tesorería</span>
                     </div>
                 </div>
             </div>
@@ -954,7 +1109,7 @@
 
         <div class="mb-16 relative z-10">
             <span class="font-mono text-accent text-sm mb-2 block">03 / TRAYECTORIA</span>
-            <h2 class="font-display text-4xl md:text-5xl font-medium">Impacto Comprobado en Producción</h2>
+            <h2 class="font-display text-4xl md:text-5xl font-medium text-balance">Impacto Comprobado en Producción</h2>
             <div class="section-accent-line"></div>
             <p class="text-secondary mt-4 max-w-2xl">Resultados cuantificables liderando áreas de sistemas, desarrollo
                 de software y continuidad operativa empresarial.</p>
@@ -962,22 +1117,21 @@
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20 relative z-10">
             <div class="metric-card scroll-reveal">
-                <div class="font-display text-5xl md:text-6xl font-medium mb-2 text-white"><span class="counter"
+                <div class="font-display text-5xl md:text-6xl font-medium mb-2 text-white tabular-nums"><span class="counter"
                         data-target="10">0</span>+</div>
                 <p class="text-secondary text-sm">Años liderando áreas de sistemas & tecnología end-to-end.</p>
             </div>
             <div class="metric-card scroll-reveal">
-                <div class="font-display text-5xl md:text-6xl font-medium mb-2 text-white"><span class="counter"
-                        data-target="0">0</span></div>
+                <div class="font-display text-5xl md:text-6xl font-medium mb-2 text-white tabular-nums"><span>0</span></div>
                 <p class="text-secondary text-sm">Incidentes de red mensuales tras modernización (antes 11–12).</p>
             </div>
             <div class="metric-card scroll-reveal">
-                <div class="font-display text-5xl md:text-6xl font-medium mb-2 text-white"><span class="counter"
+                <div class="font-display text-5xl md:text-6xl font-medium mb-2 text-white tabular-nums"><span class="counter"
                         data-target="4">0</span></div>
                 <p class="text-secondary text-sm">Sedes internacionales unificadas (EC, PE, PA, USA).</p>
             </div>
             <div class="metric-card scroll-reveal">
-                <div class="font-display text-5xl md:text-6xl font-medium mb-2 text-white"><span class="counter"
+                <div class="font-display text-5xl md:text-6xl font-medium mb-2 text-white tabular-nums"><span class="counter"
                         data-target="249">0</span></div>
                 <p class="text-secondary text-sm">Cámaras y switches administrados con certificación VAS.</p>
             </div>
@@ -1019,8 +1173,7 @@
                         Inventarios).</p>
                     <p>• Creación de sistema de trazabilidad de producción en tiempo real (reducción de tiempos de
                         registro de 1 día a inmediato).</p>
-                    <p>• Modernización de infraestructura de red (fibra óptica + radioenlace) y despliegue de 249
-                        cámaras Hikvision con certificación VAS.</p>
+                    <p>• Modernización de infraestructura de red (fibra óptica + radioenlace) y despliegue de 249&nbsp;cámaras Hikvision con certificación VAS.</p>
                 </div>
             </div>
         </div>
@@ -1030,7 +1183,7 @@
     <section id="stack" class="py-24 px-6 md:px-12 lg:px-24 border-t border-white/5">
         <div class="mb-16">
             <span class="font-mono text-accent text-sm mb-2 block">04 / STACK</span>
-            <h2 class="font-display text-4xl md:text-5xl font-medium">Herramientas & Tecnologías</h2>
+            <h2 class="font-display text-4xl md:text-5xl font-medium text-balance">Herramientas & Tecnologías</h2>
             <div class="section-accent-line"></div>
             <p class="text-secondary mt-4">Tecnologías probadas en entornos empresariales de alta exigencia.</p>
         </div>
@@ -1040,42 +1193,42 @@
                 <h4 class="font-mono text-sm text-secondary mb-6 uppercase tracking-wider">Backend & APIs</h4>
                 <div class="stack-group flex flex-wrap gap-3">
                     <span
-                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm">Python</span>
+                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm" translate="no">Python</span>
                     <span
-                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm">FastAPI</span>
+                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm" translate="no">FastAPI</span>
                     <span
-                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm">Flask</span>
+                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm" translate="no">Flask</span>
                     <span
-                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm">PostgreSQL</span>
+                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm" translate="no">PostgreSQL</span>
                     <span
-                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm">SQL
+                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm" translate="no">SQL
                         Server</span>
                     <span
-                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm">Next.js</span>
+                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm" translate="no">Next.js</span>
                     <span
-                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm">SQLite</span>
+                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm" translate="no">SQLite</span>
                 </div>
             </div>
             <div class="scroll-reveal">
                 <h4 class="font-mono text-sm text-secondary mb-6 uppercase tracking-wider">Integraciones & Cloud</h4>
                 <div class="stack-group flex flex-wrap gap-3">
                     <span
-                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm">Magaya
+                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm" translate="no">Magaya
                         SOAP</span>
                     <span
-                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm">Microsoft
+                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm" translate="no">Microsoft
                         Graph</span>
                     <span
-                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm">Azure
+                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm" translate="no">Azure
                         AD</span>
                     <span
-                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm">SRI
+                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm" translate="no">SRI
                         Ecuador</span>
                     <span
-                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm">REST
+                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm" translate="no">REST
                         APIs</span>
                     <span
-                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm">XML
+                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm" translate="no">XML
                         / SOAP</span>
                 </div>
             </div>
@@ -1083,19 +1236,19 @@
                 <h4 class="font-mono text-sm text-secondary mb-6 uppercase tracking-wider">Automatización & DevOps</h4>
                 <div class="stack-group flex flex-wrap gap-3">
                     <span
-                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm">n8n</span>
+                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm" translate="no">n8n</span>
                     <span
-                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm">Docker</span>
+                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm" translate="no">Docker</span>
                     <span
-                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm">Gotenberg</span>
+                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm" translate="no">Gotenberg</span>
                     <span
-                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm">Windows
+                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm" translate="no">Windows
                         Server</span>
                     <span
-                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm">ISO
+                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm" translate="no">ISO
                         27001 Auditor</span>
                     <span
-                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm">Vercel</span>
+                        class="stack-tag interactive-element px-4 py-2 bg-surface border border-white/10 rounded-full text-sm" translate="no">Vercel</span>
                 </div>
             </div>
         </div>
@@ -1106,7 +1259,7 @@
         <div class="parallax-bg absolute inset-0 bg-accent/5 blur-[120px] rounded-full pointer-events-none"></div>
         <div class="max-w-4xl mx-auto text-center relative z-10">
             <span class="font-mono text-accent text-sm mb-4 block">05 / CONTACTO</span>
-            <h2 class="font-display text-5xl md:text-7xl font-medium mb-6">¿Tienes un sistema que<br>necesita
+            <h2 class="font-display text-5xl md:text-7xl font-medium mb-6 text-balance">¿Tienes un sistema que<br>necesita
                 conectarse?</h2>
             <div class="section-accent-line mx-auto" style="margin-left:auto;margin-right:auto;"></div>
             <p class="text-secondary text-lg max-w-xl mx-auto mb-12 mt-6">Disponible para proyectos freelance,
@@ -1114,15 +1267,15 @@
             </p>
 
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-                <a href="/cdn-cgi/l/email-protection#c2b0adaca3aea6b4a3b1b3b7a7b8b282a5afa3abaeeca1adaf"
+                <a href="mailto:ronaldvasquezp@gmail.com"
                     data-split="true"
-                    class="magnetic-btn interactive-element inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-black font-medium rounded-full hover:bg-gray-200 transition-all duration-300 w-full sm:w-auto">
-                    <i data-lucide="mail" class="w-5 h-5"></i>
+                    class="magnetic-btn interactive-element inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-black font-medium rounded-full hover:bg-gray-200 w-full sm:w-auto">
+                    <i data-lucide="mail" aria-hidden="true" class="w-5 h-5"></i>
                     Enviar Correo
                 </a>
                 <a href="https://wa.me/593997295474" data-split="true"
-                    class="magnetic-btn interactive-element inline-flex items-center justify-center gap-3 px-8 py-4 border border-white/20 rounded-full hover:bg-white/5 transition-all duration-300 w-full sm:w-auto">
-                    <i data-lucide="message-circle" class="w-5 h-5"></i>
+                    class="magnetic-btn interactive-element inline-flex items-center justify-center gap-3 px-8 py-4 border border-white/20 rounded-full hover:bg-white/5 w-full sm:w-auto">
+                    <i data-lucide="message-circle" aria-hidden="true" class="w-5 h-5"></i>
                     WhatsApp
                 </a>
             </div>
@@ -1130,46 +1283,64 @@
             <div class="flex flex-wrap justify-center gap-8 text-secondary">
                 <a href="https://t.me/+593997295474" data-split="true"
                     class="interactive-element inline-flex items-center gap-2 hover:text-white transition-colors">
-                    <i data-lucide="send" class="w-4 h-4"></i> Telegram
+                    <i data-lucide="send" aria-hidden="true" class="w-4 h-4"></i> Telegram
                 </a>
                 <a href="https://www.linkedin.com/in/ronald-eduardo-vasquez-pineda-7a2bb8140/" data-split="true"
                     class="interactive-element inline-flex items-center gap-2 hover:text-white transition-colors">
-                    <i data-lucide="linkedin" class="w-4 h-4"></i> LinkedIn
+                    <i data-lucide="linkedin" aria-hidden="true" class="w-4 h-4"></i> LinkedIn
                 </a>
                 <a href="https://github.com/revp17/MiPortafolio" data-split="true"
                     class="interactive-element inline-flex items-center gap-2 hover:text-white transition-colors">
-                    <i data-lucide="github" class="w-4 h-4"></i> GitHub Pages
+                    <i data-lucide="github" aria-hidden="true" class="w-4 h-4"></i> GitHub
                 </a>
             </div>
         </div>
     </section>
+    </main>
 
     <!-- Footer -->
     <footer
         class="py-8 px-6 md:px-12 lg:px-24 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-secondary">
-        <div>© 2024 Ronald Vásquez</div>
+        <div>© <span id="footer-year">2024</span> Ronald Vásquez</div>
         <div class="flex items-center gap-2">
             <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-            Desplegado en <a href="https://github.com/revp17/MiPortafolio"
+            Desplegado en <a href="https://revp17.github.io/MiPortafolio/"
                 class="interactive-element hover:text-white underline decoration-white/30 underline-offset-4 transition-colors">GitHub
                 Pages</a> · Guayaquil, Ecuador
         </div>
     </footer>
 
     <!-- Scripts de Animación -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
     <script>
+        // Iconos: no dependen de GSAP, se inicializan con su propio guard.
+        if (typeof lucide !== 'undefined') {
+            try { lucide.createIcons(); } catch (e) { console.error('Lucide falló:', e); }
+        }
+
+        // Si el CDN de GSAP, ScrollTrigger o Lenis no cargó, no animamos nada.
+        // El contenido ya es visible por defecto y el preloader se libera
+        // mediante la red de seguridad definida antes del <nav>.
+        if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined' || typeof Lenis === 'undefined') {
+            console.error('GSAP/ScrollTrigger/Lenis no disponibles: se omiten las animaciones.');
+        } else {
+        try {
         gsap.registerPlugin(ScrollTrigger);
 
         const isFinePointer = window.matchMedia('(pointer: fine)').matches;
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        // Inicializar Iconos
-        lucide.createIcons();
+        // prefers-reduced-motion sólo apagaba el marquee y el parallax de scroll
+        // (más abajo); el preloader, la entrada del hero, los contadores y los
+        // scroll-reveals seguían animando a duración completa. Acelerar la
+        // línea de tiempo global de GSAP deja el contenido final idéntico,
+        // pero casi instantáneo, sin tocar cada tween uno por uno.
+        if (reducedMotion) {
+            gsap.globalTimeline.timeScale(50);
+        }
 
         // ==========================================
         // 1. LENIS SMOOTH SCROLL (sincronizado con GSAP — un solo bucle rAF)
@@ -1210,6 +1381,9 @@
         // ==========================================
         if (isFinePointer) {
             const cursor = document.getElementById('cursor');
+            // Recién ahora es seguro ocultar el cursor real: el reemplazo
+            // (arriba) ya está funcionando en este mismo bloque.
+            document.documentElement.classList.add('cursor-ready');
             gsap.set(cursor, { xPercent: -50, yPercent: -50 });
 
             const xTo = gsap.quickTo(cursor, 'x', { duration: 0.35, ease: 'power3' });
@@ -1236,13 +1410,23 @@
                 const bx = gsap.quickTo(btn, 'x', { duration: 0.3, ease: 'power2.out' });
                 const by = gsap.quickTo(btn, 'y', { duration: 0.3, ease: 'power2.out' });
 
+                // El rect se mide una sola vez al entrar (no en cada pixel de
+                // mousemove: evita forzar layout de golpe por evento). Como el
+                // botón no cambia de tamaño ni de posición en reposo, sigue
+                // siendo válido mientras dura el hover.
+                let rect = null;
+                btn.addEventListener('mouseenter', () => {
+                    rect = btn.getBoundingClientRect();
+                });
+
                 btn.addEventListener('mousemove', (e) => {
-                    const rect = btn.getBoundingClientRect();
+                    if (!rect) rect = btn.getBoundingClientRect();
                     bx((e.clientX - rect.left - rect.width / 2) * 0.3);
                     by((e.clientY - rect.top - rect.height / 2) * 0.3);
                 }, { passive: true });
 
                 btn.addEventListener('mouseleave', () => {
+                    rect = null;
                     gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.5)' });
                 });
             });
@@ -1253,11 +1437,20 @@
         // ==========================================
         if (isFinePointer) {
             document.querySelectorAll('.project-card').forEach(card => {
+                // Igual que en los botones magnéticos: un solo layout read al
+                // entrar, no uno por pixel de pointermove.
+                let r = null;
+                card.addEventListener('pointerenter', () => {
+                    r = card.getBoundingClientRect();
+                });
                 card.addEventListener('pointermove', (e) => {
-                    const r = card.getBoundingClientRect();
+                    if (!r) r = card.getBoundingClientRect();
                     card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
                     card.style.setProperty('--my', (e.clientY - r.top) + 'px');
                 }, { passive: true });
+                card.addEventListener('pointerleave', () => {
+                    r = null;
+                });
             });
         }
 
@@ -1266,6 +1459,20 @@
         // ==========================================
         document.querySelectorAll('.char-split-hover').forEach(el => {
             if (el.dataset.split === 'true') return;
+
+            // Nombre accesible fijo ANTES de trocear el texto en <span> por
+            // letra: sin esto, algunos lectores de pantalla deletrean
+            // carácter por carácter en vez de leer la palabra completa.
+            if (!el.hasAttribute('aria-label')) {
+                el.setAttribute('aria-label', el.textContent.trim());
+            }
+
+            // Los <span> por letra quedan puramente decorativos (aria-hidden);
+            // el nombre accesible ya lo da el aria-label de arriba.
+            const wrapper = document.createElement('span');
+            wrapper.setAttribute('aria-hidden', 'true');
+            wrapper.style.display = 'inherit';
+            wrapper.style.alignItems = 'inherit';
 
             const nodes = Array.from(el.childNodes);
             el.innerHTML = '';
@@ -1278,12 +1485,13 @@
                         span.textContent = char === ' ' ? ' ' : char;
                         span.style.display = 'inline-block';
                         span.style.transitionDelay = `${index * 0.018}s`;
-                        el.appendChild(span);
+                        wrapper.appendChild(span);
                     });
                 } else {
-                    el.appendChild(node);
+                    wrapper.appendChild(node);
                 }
             });
+            el.appendChild(wrapper);
             el.dataset.split = 'true';
         });
 
@@ -1377,19 +1585,26 @@
         // 9. PARALLAX (con force3D para composición GPU)
         // ==========================================
         if (!reducedMotion) {
-            gsap.utils.toArray('.parallax-bg').forEach((bg) => {
-                gsap.to(bg, {
-                    yPercent: 30,
-                    ease: 'none',
-                    force3D: true,
-                    scrollTrigger: {
-                        trigger: bg.parentElement,
-                        start: 'top bottom',
-                        end: 'bottom top',
-                        scrub: 0.5
-                    }
+            // Los 5 blobs de fondo llevan blur pesado (100-120px); en móviles
+            // de gama media, sumarles un recálculo de transform en cada frame
+            // de scroll es el combo más costoso de la página. Se mantienen
+            // visibles (el blur ya está ahí de por sí) pero sin el scrub.
+            const skipBgParallax = window.innerWidth < 768;
+            if (!skipBgParallax) {
+                gsap.utils.toArray('.parallax-bg').forEach((bg) => {
+                    gsap.to(bg, {
+                        yPercent: 30,
+                        ease: 'none',
+                        force3D: true,
+                        scrollTrigger: {
+                            trigger: bg.parentElement,
+                            start: 'top bottom',
+                            end: 'bottom top',
+                            scrub: 0.5
+                        }
+                    });
                 });
-            });
+            }
 
             gsap.to('.parallax-element', {
                 y: -50,
@@ -1440,13 +1655,13 @@
         // ==========================================
         // 11. DIVIDER LINE
         // ==========================================
-        ScrollTrigger.create({
-            trigger: '.divider-line',
-            start: 'top 80%',
-            onEnter: () => {
-                document.querySelector('.divider-line').classList.add('active');
-            },
-            once: true
+        gsap.utils.toArray('.divider-line').forEach((line) => {
+            ScrollTrigger.create({
+                trigger: line,
+                start: 'top 80%',
+                onEnter: () => line.classList.add('active'),
+                once: true
+            });
         });
 
         // ==========================================
@@ -1468,6 +1683,10 @@
                 }
             });
         });
+        } catch (e) {
+            console.error('Fallo en animaciones GSAP:', e);
+        }
+        }
     </script>
 </body>
 
