@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+/* Equivalente al tailwind.config.js (JS runtime) que reemplaza este build.
+   Si agregas colores/fuentes nuevas, actualiza aquí y vuelve a compilar. */
+@theme {
+    --font-sans: Inter, sans-serif;
+    --font-display: "Space Grotesk", sans-serif;
+
+    --color-background: #0a0a0a;
+    --color-surface: #141414;
+    --color-primary: #ffffff;
+    --color-secondary: #a1a1aa;
+    --color-accent: #3b82f6;
+}
